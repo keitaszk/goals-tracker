@@ -3,18 +3,12 @@ import { Button, Stack, Box, Card, CardContent, Typography, CardActionArea } fro
 function SubGoalCard({ goal }) {
     const subGoals = goal.subGoals
     return (
-        <Box
-            sx={{
-                width: '100%',
-                display: 'grid',
-                gap: 2,
-                textAlign: "left"
-            }}
-        >
+        <>
             {subGoals.map((subGoal, index) => (
-                <Card sx={{ backgroundColor: subGoal.completed && "#f3e8ff" }}>
+                <Card key={index} sx={{ backgroundColor: subGoal.completed && "#f3e8ff" }}>
                     <CardActionArea disableRipple>
-                        <CardContent>
+                        <CardContent
+                        >
                             <Stack direction="row" justifyContent="space-between" alignItems="center">
                                 <Typography variant="h6" fontWeight="600" component="div"
                                     sx={{
@@ -27,7 +21,7 @@ function SubGoalCard({ goal }) {
                                     disabled={subGoal.completed}
                                     sx={{
                                         borderColor: "#a855f7",
-                                        color: subGoal.completed ? "#a855f7" : "#a855f7",
+                                        color: "#a855f7",
                                         backgroundColor: subGoal.completed ? "#f3e8ff" : "transparent",
                                         fontWeight: 600,
                                         "&:hover": {
@@ -44,7 +38,7 @@ function SubGoalCard({ goal }) {
                     </CardActionArea>
                 </Card>
             ))}
-        </Box>
+        </>
     );
 }
 

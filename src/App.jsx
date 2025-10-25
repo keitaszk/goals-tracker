@@ -47,12 +47,12 @@ const mainGoals = [
 function App() {
   const [selectedGoalId, setSelectedGoalId] = useState(mainGoals[0].id);
   const selectedMainGoal = mainGoals.find((mainGoal) => mainGoal.id === selectedGoalId)
-  const handleSelectedGoal = (goalId) => {
+  const onSelectGoal = (goalId) => {
     setSelectedGoalId(goalId)
   }
   return (
     <Box sx={{ display: 'flex' }}>
-      <MenuDrawer mainGoals={mainGoals} handleSelectedGoal={handleSelectedGoal} selectedMainGoal={selectedMainGoal} />
+      <MenuDrawer mainGoals={mainGoals} handleSelectedGoal={onSelectGoal} selectedMainGoal={selectedMainGoal} />
       <Box sx={{ flexGrow: 1 }}>
         <MainGoal selectedMainGoal={selectedMainGoal} />
       </Box>

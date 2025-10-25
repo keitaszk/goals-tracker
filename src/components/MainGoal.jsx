@@ -1,16 +1,27 @@
+import AddSubGoal from "./AddSubGoal"
 import GoalStepper from "./GoalStepper"
 import SubGoalCard from "./SubGoalCard"
 import { Box } from "@mui/material"
 
 export default function MainGoal({ selectedMainGoal }) {
-    const goal = selectedMainGoal
     return (
         <>
-            <Box sx={{ flex: 1, p: 6, maxWidth: "800px", mx: "auto" }}>
-                <h1>{goal.emoji} {goal.title}</h1>
-                <GoalStepper goal={goal} />
-                <p>{goal.dueDate} left</p>
-                <SubGoalCard goal={goal} />
+            <Box sx={{ flex: 1, p: 6, mx: "auto" }}>
+                <h1>{selectedMainGoal.emoji} {selectedMainGoal.title}</h1>
+                <GoalStepper goal={selectedMainGoal} />
+                <p>{selectedMainGoal.dueDate} left</p>
+                {/* calcuation will be added */}
+                <Box
+                    sx={{
+                        width: '100%',
+                        display: 'grid',
+                        gap: 2,
+                        textAlign: "left"
+                    }}
+                >
+                    <SubGoalCard goal={selectedMainGoal} />
+                    <AddSubGoal />
+                </Box>
             </Box>
         </>
     )

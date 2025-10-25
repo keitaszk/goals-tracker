@@ -20,6 +20,7 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, selectedMain
                                 <FormatListBulletedIcon />
                             </ListItemIcon>
                             <ListItemText primary="All Goals" />
+                            {/* for the calendar view */}
                         </ListItemButton>
                     </ListItem>
                 </List>
@@ -31,10 +32,12 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, selectedMain
                         </ListSubheader>
                     }>
                     {mainGoals.map((goal) => (
-                        <ListItem disablePadding>
+                        <ListItem disablePadding key={goal.id}>
                             <ListItemButton onClick={() => handleSelectedGoal(goal.id)}>
-                                {goal.emoji}
-                                <ListItemText sx={{ marginLeft: "10px" }} primary={goal.title} />
+                                <ListItemIcon sx={{ color: 'text.primary', fontSize: "24px"}}>
+                                    {goal.emoji}
+                                </ListItemIcon>
+                                <ListItemText primary={goal.title} />
                             </ListItemButton>
                         </ListItem>
                     ))}

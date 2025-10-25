@@ -15,8 +15,8 @@ export default function GoalStepper({ goal }) {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Stepper a
-        ctiveStep={completedCount}
+      <Stepper 
+      activeStep={completedCount}
         alternativeLabel
         sx={{
           "& .MuiStepIcon-root": {
@@ -29,8 +29,8 @@ export default function GoalStepper({ goal }) {
             color: "#9333ea", // ← 完了したステップ
           },
         }}>
-        {subGoals.map((subGoal) => (
-          <Step>
+        {subGoals.map((subGoal, idx) => (
+          <Step key={idx}>
             <StepLabel>{subGoal.dueDate}</StepLabel>
           </Step>
         ))}
