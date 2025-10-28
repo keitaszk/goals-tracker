@@ -14,9 +14,10 @@ import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
-export default function SubGoalDialog() {
+export default function SubGoalDialog({ fetchMainGoal, selectedMainGoal }) {
+    const mainGoalId = selectedMainGoal._id
     const [open, setOpen] = useState(false);
-    const [date, setDate] = useState(dayjs());
+    const [dueDate, setDueDate] = useState(dayjs());
     const [title, setTitle] = useState("");
 
     const handleClickOpen = () => {
@@ -26,6 +27,31 @@ export default function SubGoalDialog() {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const newSubGoal = {
+            title,
+            dueDate: new Date(dueDate),
+        };
+
+        console.log("送信内容:", newSubGoal);
+        const res = await fetch(`http://localhost:3000/api/mainGoals/${mainGoalId}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newSubGoal),
+        })
+
+        if (res.ok) {
+            const data = await res.json();
+            console.log("追加成功", data)
+            fetchMainGoal();
+            handleClose();
+        } else {
+            console.log("追加失敗")
+        }
+    }
 
     return (
         <Fragment>
@@ -51,18 +77,21 @@ export default function SubGoalDialog() {
                     </DialogTitle>
                     <CloseIcon sx={{ mr: 2 }} onClick={handleClose} />
                 </Stack>
-                <DialogContent>
-                    <TextField id="outlined-basic" label="Title" variant="outlined" value={title} onChange={() => setTitle()}/>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                            label="Controlled picker"
-                            value={date}
-                            onChange={(newDate) => setDate(newDate)}
-                        />
-                    </LocalizationProvider>
-                </DialogContent>
-                <DialogActions>
-                </DialogActions>
+                <form action="" onSubmit={handleSubmit}>
+                    <DialogContent>
+                        <TextField id="outlined-basic" label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} />
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DatePicker
+                                label="Controlled picker"
+                                value={dueDate}
+                                onChange={(newDate) => setDueDate(newDate)}
+                            />
+                        </LocalizationProvider>
+                    </DialogContent>
+                    <Button type='submit'>Create</Button>
+                    <DialogActions>
+                    </DialogActions>
+                </form>
             </Dialog>
         </Fragment>
     );

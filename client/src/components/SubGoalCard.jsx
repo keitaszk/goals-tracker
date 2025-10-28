@@ -1,4 +1,4 @@
-import { Button, Stack, Box, Card, CardContent, Typography, CardActionArea } from '@mui/material';
+import { Button, Stack, Card, CardContent, Typography, CardActionArea } from '@mui/material';
 
 function SubGoalCard({ goal }) {
     const subGoals = goal.subGoals

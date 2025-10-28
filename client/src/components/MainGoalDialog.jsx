@@ -13,7 +13,7 @@ import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
-export default function SubGoalDialog() {
+export default function MainGoalDialog({fetchMainGoal}) {
     const [open, setOpen] = useState(false);
     const [dueDate, setDate] = useState(dayjs());
     const [title, setTitle] = useState("");
@@ -39,7 +39,7 @@ export default function SubGoalDialog() {
         };
 
         console.log("送信内容:", newMainGoal);
-        const res = await fetch("http://localhost:3000/api/goals", {
+        const res = await fetch("http://localhost:3000/api/mainGoals", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newMainGoal),
@@ -48,6 +48,8 @@ export default function SubGoalDialog() {
         if (res.ok) {
             const data = await res.json();
             console.log("追加成功", data)
+            fetchMainGoal();
+            handleClose();
         } else {
             console.log("追加失敗")
         }
@@ -64,7 +66,7 @@ export default function SubGoalDialog() {
                     backgroundColor: "transparent",
                     fontWeight: 600,
                 }}
-            >+ Add Maingoal</Button>
+            >+ Add maingoal</Button>
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -73,7 +75,7 @@ export default function SubGoalDialog() {
             >
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                     <DialogTitle id="alert-dialog-title">
-                        {"Add New Maingoal"}
+                        {"Add New Main Goal"}
                     </DialogTitle>
                     <CloseIcon sx={{ mr: 2 }} onClick={handleClose} />
                 </Stack>

@@ -2,7 +2,7 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import { ListSubheader, Drawer, List, Divider, ListItemButton, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import MainGoalDialog from './MainGoalDialog';
 
-export default function MenuDrawer({ mainGoals, handleSelectedGoal, selectedMainGoal }) {
+export default function MenuDrawer({ mainGoals, handleSelectedGoal, selectedMainGoal, fetchMainGoal }) {
     return (
         <div>
             <Drawer
@@ -11,7 +11,7 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, selectedMain
                     width: "250px", '& .MuiDrawer-paper': {
                         width: "250px",
                         boxSizing: 'border-box',
-                        backgroundColor: selectedMainGoal.themeColor
+                        backgroundColor: selectedMainGoal.themeColor,
                     },
                 }}>
                 <List>
@@ -34,15 +34,15 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, selectedMain
                     }>
                     {mainGoals.map((goal) => (
                         <ListItem disablePadding key={goal.id}>
-                            <ListItemButton onClick={() => handleSelectedGoal(goal.id)}>
-                                <ListItemIcon sx={{ color: 'text.primary', fontSize: "24px"}}>
+                            <ListItemButton onClick={() => handleSelectedGoal(goal._id)}>
+                                <ListItemIcon sx={{ color: 'text.primary', fontSize: "24px" }}>
                                     {goal.emoji}
                                 </ListItemIcon>
                                 <ListItemText primary={goal.title} />
                             </ListItemButton>
                         </ListItem>
                     ))}
-                    <MainGoalDialog />
+                    <MainGoalDialog fetchMainGoal={fetchMainGoal}/>
                 </List>
             </Drawer>
         </div>

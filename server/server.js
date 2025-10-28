@@ -28,7 +28,17 @@ const mainGoalSchema = new mongoose.Schema({
 // db.maingoals.find()
 const MainGoal = mongoose.model("MainGoal", mainGoalSchema);
 
-app.post("/api/goals", async (req, res) => {
+app.get("/api/mainGoals", async (req, res) => {
+    try {
+        const goals = await MainGoal.find();
+        res.json(goals);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server error" })
+    }
+})
+
+app.post("/api/mainGoals", async (req, res) => {
     try {
         const newMainGoal = new MainGoal(req.body);
         await newMainGoal.save();
@@ -37,6 +47,27 @@ app.post("/api/goals", async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 });
+
+app.post("/api/mainGoals/:id", async (req, res) => {
+    try {
+        const mainGoalId = req.params.id;
+        const subGoalData = req.body;
+
+        const updateMainGoal = await MainGoal.findByIdAndUpdate(
+            mainGoalId,
+            { $push: { subGoals: subGoalData } },
+            { new: true }
+        );
+
+        if (!updateMainGoal) {
+            return res.status(404).json({ message: "MainGoal not found" });
+        }
+        res.json(updateMainGoal);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Server error" })
+    }
+})
 
 // MainGoal.deleteMany({})
 //     .then(() => {
@@ -82,5 +113,6 @@ app.post("/api/goals", async (req, res) => {
 //     .catch(err => console.error("error", err))
 
 app.listen(3000, () => {
-    console.log("ポート3000でリクエスト受付中")
+    console.log("Server running on port 3000")
 })
+
