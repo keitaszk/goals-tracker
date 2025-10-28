@@ -1,5 +1,6 @@
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import { ListSubheader, Drawer, List, Divider, ListItemButton, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import MainGoalDialog from './MainGoalDialog';
 
 export default function MenuDrawer({ mainGoals, handleSelectedGoal, selectedMainGoal }) {
     return (
@@ -41,6 +42,7 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, selectedMain
                             </ListItemButton>
                         </ListItem>
                     ))}
+                    <MainGoalDialog />
                 </List>
             </Drawer>
         </div>
