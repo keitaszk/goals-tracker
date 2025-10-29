@@ -69,6 +69,22 @@ app.post("/api/mainGoals/:id", async (req, res) => {
     }
 })
 
+app.patch("/api/subgoals/:subGoalId", async (req, res) => {
+    try {
+        const subGoalId = req.params.subGoalId;
+        const mainGoal = await MainGoal.findOne({ "subGoals._id": subGoalId });
+        if (!mainGoal) return res.status(404).json({ message: "MainGoal not found" });
+
+        const subGoal = mainGoal.subGoals.id(subGoalId)
+        subGoal.completed = !subGoal.completed;
+
+        await mainGoal.save();
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server error" });
+    }
+})
+
 // MainGoal.deleteMany({})
 //     .then(() => {
 //         console.log("Deleted all")

@@ -19,7 +19,7 @@ export default function MainGoal({ selectedMainGoal, fetchMainGoal }) {
                         textAlign: "left"
                     }}
                 >
-                    <SubGoalCard goal={selectedMainGoal} />
+                    <SubGoalCard goal={selectedMainGoal} fetchMainGoal={fetchMainGoal} />
                     <AddSubGoal fetchMainGoal={fetchMainGoal} selectedMainGoal={selectedMainGoal}/>
                 </Box>
             </Box>

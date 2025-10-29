@@ -1,7 +1,26 @@
 import { Button, Stack, Card, CardContent, Typography, CardActionArea } from '@mui/material';
 
-function SubGoalCard({ goal }) {
+function SubGoalCard({ goal, fetchMainGoal }) {
     const subGoals = goal.subGoals
+
+    const toggleSubGoal = async (subGoalId) => {
+        try {
+            console.log(subGoalId)
+            const res = await fetch(
+                `http://localhost:3000/api/subgoals/${subGoalId}`,
+                { method: "PATCH", headers: { "Content-Type": "application/json" } }
+            );
+            if (res.ok) {
+                console.log("subGoalToggle fetch成功");
+                fetchMainGoal();
+            } else {
+                console.error();
+            }
+        }
+        catch (err) {
+            console.error("通信エラー", err)
+        }
+    };
     return (
         <>
             {subGoals.map((subGoal, index) => (
@@ -17,8 +36,10 @@ function SubGoalCard({ goal }) {
                                     }}>
                                     {index + 1}. {subGoal.title}
                                 </Typography>
-                                <Button variant={subGoal.completed ? "contained" : "outlined"}
-                                    disabled={subGoal.completed}
+                                <Button
+                                    variant={subGoal.completed ? "contained" : "outlined"}
+                                    // disabled={subGoal.completed}
+                                    onClick={() => toggleSubGoal(subGoal._id)}
                                     sx={{
                                         borderColor: "#a855f7",
                                         color: "#a855f7",

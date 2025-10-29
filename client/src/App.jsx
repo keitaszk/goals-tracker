@@ -4,6 +4,7 @@ import MenuDrawer from './components/MenuDrawer'
 import MainGoal from './components/MainGoal'
 import { useState, useEffect } from 'react'
 import CircularProgress from '@mui/material/CircularProgress';
+
 // const mainGoals = [
 //   {
 //     title: "IT Company",
@@ -50,8 +51,8 @@ function App() {
   const [selectedMainGoal, setSelectedMainGoal] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchMainGoal = async () => {
-    fetch("http://localhost:3000/api/mainGoals")
+  const fetchMainGoal = () => {
+    return fetch("http://localhost:3000/api/mainGoals")
       .then((res) => res.json())
       .then((data) => {
         setMainGoals(data)
