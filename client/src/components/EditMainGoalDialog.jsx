@@ -12,12 +12,14 @@ import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import EditIcon from '@mui/icons-material/Edit';
 
-export default function SubGoalDialog({ updateMainGoals, selectedMainGoal }) {
-    const mainGoalId = selectedMainGoal._id
+export default function EditMainGoalDialog({ updateMainGoals, mainGoal }) {
     const [open, setOpen] = useState(false);
-    const [dueDate, setDueDate] = useState(dayjs());
-    const [title, setTitle] = useState("");
+    const [dueDate, setDate] = useState(dayjs(mainGoal.dueDate));
+    const [title, setTitle] = useState(mainGoal.title);
+    const [emoji, setEmoji] = useState(mainGoal.emoji);
+    const [themeColor, setThemeColor] = useState(mainGoal.themeColor);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -27,43 +29,38 @@ export default function SubGoalDialog({ updateMainGoals, selectedMainGoal }) {
         setOpen(false);
     };
 
-    const handleSubmit = async (e) => {
+    const handleEdit = async (e) => {
         e.preventDefault();
 
-        const newSubGoal = {
+        const editedMainGoal = {
             title,
             dueDate: new Date(dueDate),
+            emoji,
+            themeColor
         };
 
-        console.log("送信内容:", newSubGoal);
-        const res = await fetch(`http://localhost:3000/api/mainGoals/${mainGoalId}`, {
-            method: "POST",
+        console.log("送信内容:", editedMainGoal);
+        const res = await fetch(`http://localhost:3000/api/mainGoals/${mainGoal._id}`, {
+            method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newSubGoal),
+            body: JSON.stringify(editedMainGoal),
         })
 
         if (res.ok) {
             const data = await res.json();
-            console.log("追加成功", data)
-            updateMainGoals();
+            console.log("編集成功", data)
+            await updateMainGoals();
             handleClose();
         } else {
-            console.log("追加失敗")
+            console.log("編集失敗")
         }
     }
 
     return (
         <Fragment>
-            <Button
+            <EditIcon
                 onClick={handleClickOpen}
-                variant="text"
-                sx={{
-                    borderColor: "#a855f7",
-                    color: "#a855f7",
-                    backgroundColor: "transparent",
-                    fontWeight: 600,
-                }}
-            >+ Add Subgoal</Button>
+            />
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -72,22 +69,24 @@ export default function SubGoalDialog({ updateMainGoals, selectedMainGoal }) {
             >
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                     <DialogTitle id="alert-dialog-title">
-                        {"Add New Subgoal"}
+                        {"Add New Main Goal"}
                     </DialogTitle>
                     <CloseIcon sx={{ mr: 2 }} onClick={handleClose} />
                 </Stack>
-                <form action="" onSubmit={handleSubmit}>
+                <form action="" onSubmit={handleEdit}>
                     <DialogContent>
                         <TextField id="outlined-basic" label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} />
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
                                 label="Controlled picker"
                                 value={dueDate}
-                                onChange={(newDate) => setDueDate(newDate)}
+                                onChange={(newDate) => setDate(newDate)}
                             />
                         </LocalizationProvider>
+                        <TextField id="outlined-basic" label="Emoji" variant="outlined" value={emoji} onChange={(e) => setEmoji(e.target.value)} />
+                        <TextField id="outlined-basic" label="Color" variant="outlined" value={themeColor} onChange={(e) => setThemeColor(e.target.value)} />
                     </DialogContent>
-                    <Button type='submit'>Create</Button>
+                    <Button type='submit'>Save</Button>
                     <DialogActions>
                     </DialogActions>
                 </form>

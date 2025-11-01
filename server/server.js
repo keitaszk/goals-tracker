@@ -85,48 +85,28 @@ app.patch("/api/subgoals/:subGoalId", async (req, res) => {
     }
 })
 
-// MainGoal.deleteMany({})
-//     .then(() => {
-//         console.log("Deleted all")
-//         return MainGoal.insertMany([
-//             {
-//                 title: "IT Company",
-//                 dueDate: new Date("2026-06-30"),
-//                 emoji: "🖥️",
-//                 completed: false,
-//                 themeColor: "#f3e8ff",
-//                 subGoals: [
-//                     { title: "Portfolio", dueDate: new Date("2025-11-15"), completed: true },
-//                     { title: "基本情報技術者", dueDate: new Date("2026-01-30"), completed: false },
-//                     { title: "AtCoder", dueDate: new Date("2026-03-30"), completed: false },
-//                 ]
-//             },
-//             {
-//                 title: "Boxing",
-//                 dueDate: new Date("2027-05-20"),
-//                 emoji: "🥊",
-//                 themeColor: "#c8f4e7ff",
-//                 completed: false,
-//                 subGoals: [
-//                     { title: "Choose the gym", dueDate: new Date("2026-06-30"), completed: false },
-//                     { title: "Spar", dueDate: new Date("2027-01-30"), completed: false },
-//                 ]
-//             },
-//             {
-//                 title: "English",
-//                 dueDate: new Date("2028-12-31"),
-//                 emoji: "🎧",
-//                 themeColor: "#fff4c9ff",
-//                 completed: false,
-//                 subGoals: [
-//                     { title: "Watch 100 movies", dueDate: new Date("2026-06-30"), completed: false },
-//                     { title: "Listen to podcasts", dueDate: new Date("2027-05-05"), completed: false },
-//                 ]
-//             },
-//         ])
-//     })
-//     .then(() => console.log("success"))
-//     .catch(err => console.error("error", err))
+app.put("/api/mainGoals/:id", async (req, res) => {
+    try {
+        const editedMainGoal = await MainGoal.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+        });
+        res.json(editedMainGoal); // respond edited data to React
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+})
+
+app.delete("/api/mainGoals/:id", async (req, res) => {
+    try {
+        const deletedMainGoal = await MainGoal.findByIdAndDelete(req.params.id);
+        if (!deletedMainGoal) {
+            return res.status(404).json({ message: "Main goal not found" });
+        }
+        res.json({ message: "Main goal deleted successfully", deletedMainGoal });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+})
 
 app.listen(3000, () => {
     console.log("Server running on port 3000")

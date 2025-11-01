@@ -1,8 +1,10 @@
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import { ListSubheader, Drawer, List, Divider, ListItemButton, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { ListSubheader, Drawer, List, Divider, ListItemButton, ListItem, ListItemIcon, ListItemText, IconButton } from '@mui/material';
 import MainGoalDialog from './MainGoalDialog';
+import EditMainGoalDialog from './EditMainGoalDialog';
+import DeleteMainGoal from './DeleteMainGoal';
 
-export default function MenuDrawer({ mainGoals, handleSelectedGoal, selectedMainGoal, fetchMainGoal }) {
+export default function MenuDrawer({ mainGoals, handleSelectedGoal, selectedMainGoal, updateMainGoals }) {
     return (
         <div>
             <Drawer
@@ -32,17 +34,36 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, selectedMain
                             Main Goals
                         </ListSubheader>
                     }>
-                    {mainGoals.map((goal) => (
-                        <ListItem disablePadding key={goal.id}>
-                            <ListItemButton onClick={() => handleSelectedGoal(goal._id)}>
+                    {mainGoals.map((mainGoal) => (
+                        <ListItem
+                            disablePadding
+                            key={mainGoal.id}
+                            sx={{
+                                '&:hover .edit-icon': {
+                                    opacity: 1,
+                                    transform: 'translateX(0)',
+                                },
+                            }}>
+                            <ListItemButton onClick={() => handleSelectedGoal(mainGoal._id)}>
                                 <ListItemIcon sx={{ color: 'text.primary', fontSize: "24px" }}>
-                                    {goal.emoji}
+                                    {mainGoal.emoji}
                                 </ListItemIcon>
-                                <ListItemText primary={goal.title} />
+                                <ListItemText primary={mainGoal.title} />
+                                {/* <EditIcon
+                                    className="edit-icon"
+                                    fontSize="small"
+                                    sx={{
+                                        opacity: 0,
+                                        transition: 'opacity 0.2s ease, transform 0.2s ease',
+                                    }}
+                                // onClick={handleEditMaingoal}
+                                /> */}
+                                <EditMainGoalDialog mainGoal={mainGoal} updateMainGoals={updateMainGoals} />
+                                <DeleteMainGoal mainGoal={mainGoal} />
                             </ListItemButton>
                         </ListItem>
                     ))}
-                    <MainGoalDialog fetchMainGoal={fetchMainGoal}/>
+                    <MainGoalDialog updateMainGoals={updateMainGoals} />
                 </List>
             </Drawer>
         </div>
