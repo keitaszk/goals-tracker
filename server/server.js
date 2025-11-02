@@ -108,6 +108,49 @@ app.delete("/api/mainGoals/:id", async (req, res) => {
     }
 })
 
+app.patch("/api/mainGoals/:mainGoalId/:subGoalId", async (req, res) => {
+    try {
+        const { mainGoalId, subGoalId } = req.params;
+        const { title, dueDate, completed } = req.body
+        const mainGoal = await MainGoal.findById(mainGoalId);
+        if (!mainGoal) {
+            return res.status(404).json({ message: "Main goal not found" });
+        }
+        const subGoal = mainGoal.subGoals.id(subGoalId);
+        if (!subGoal) {
+            return res.status(404).json({ message: "Subgoal not found" });
+        }
+        subGoal.title = title;
+        subGoal.dueDate = dueDate;
+        subGoal.completed = completed;
+        await mainGoal.save();
+        res.json(subGoal);
+    } catch (err) {
+        console.error("Error updating subgoal", err);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
+app.delete("/api/mainGoals/:mainGoalId/:subGoalId", async (req, res) => {
+    try {
+        const { mainGoalId, subGoalId } = req.params;
+        const mainGoal = await MainGoal.findById(mainGoalId);
+        if (!mainGoal) {
+            return res.status(404).json({ message: "Main goal not found" });
+        }
+        const subGoal = mainGoal.subGoals.id(subGoalId);
+        if (!subGoal) {
+            return res.status(404).json({ message: "Subgoal not found" });
+        }
+        subGoal.deleteOne();
+        await mainGoal.save();
+        res.json({ message: "Subgoal deleted successfully" });
+    } catch (err) {
+        console.error("Error deleting subgoal:", err);
+        res.status(500).json({ message: "Server error" });
+    }
+})
+
 app.listen(3000, () => {
     console.log("Server running on port 3000")
 })

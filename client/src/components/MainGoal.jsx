@@ -19,7 +19,7 @@ export default function MainGoal({ selectedMainGoal, updateMainGoals }) {
                         textAlign: "left"
                     }}
                 >
-                    <SubGoalCard goal={selectedMainGoal} updateMainGoals={updateMainGoals} />
+                    <SubGoalCard selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals} />
                     <AddSubGoal updateMainGoals={updateMainGoals} selectedMainGoal={selectedMainGoal}/>
                 </Box>
             </Box>

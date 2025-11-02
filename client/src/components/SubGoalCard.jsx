@@ -1,7 +1,9 @@
 import { Button, Stack, Card, CardContent, Typography, CardActionArea } from '@mui/material';
+import EditSubGoalDialog from './EditSubGoalDialog';
+import DeleteSubGoal from './DeleteSubGoal';
 
-function SubGoalCard({ goal, updateMainGoals }) {
-    const subGoals = goal.subGoals
+function SubGoalCard({ selectedMainGoal, updateMainGoals }) {
+    const subGoals = selectedMainGoal.subGoals
 
     const toggleSubGoal = async (subGoalId) => {
         try {
@@ -36,6 +38,8 @@ function SubGoalCard({ goal, updateMainGoals }) {
                                     }}>
                                     {index + 1}. {subGoal.title}
                                 </Typography>
+                                <EditSubGoalDialog subGoal={subGoal} selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals} />
+                                <DeleteSubGoal subGoal={subGoal} selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals} />
                                 <Button
                                     variant={subGoal.completed ? "contained" : "outlined"}
                                     onClick={() => toggleSubGoal(subGoal._id)}

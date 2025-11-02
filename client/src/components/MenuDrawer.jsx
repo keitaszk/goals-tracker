@@ -59,7 +59,7 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, selectedMain
                                 // onClick={handleEditMaingoal}
                                 /> */}
                                 <EditMainGoalDialog mainGoal={mainGoal} updateMainGoals={updateMainGoals} />
-                                <DeleteMainGoal mainGoal={mainGoal} />
+                                <DeleteMainGoal mainGoal={mainGoal} updateMainGoals={updateMainGoals}/>
                             </ListItemButton>
                         </ListItem>
                     ))}
