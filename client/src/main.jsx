@@ -3,10 +3,14 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { CssBaseline } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <CssBaseline />
-    <App />
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <App /> {/* 全体を包む */}
+    </LocalizationProvider>
   </StrictMode>,
 )

@@ -15,7 +15,6 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         setMainGoals(data)
-        // setSelectedMainGoal((prev) => prev ?? data[0]);
         if (data.length > 0 && !selectedMainGoal) {
           setSelectedMainGoal(data[0])
         }
@@ -25,25 +24,38 @@ function App() {
   }
 
   useEffect(() => {
+    console.log("mainGoalsが更新されました", mainGoals);
+  }, [mainGoals]);
+
+  useEffect(() => {
     fetchMainGoal();
   }, []);
 
-  // useEffect(() => {
-  //   updateMainGoals();
-  // }, [mainGoals])
+  const updateMainGoals = async () => {
+    // setIsLoading(true);
+    try {
+      const res = await fetch("http://localhost:3000/api/mainGoals");
+      if (!res.ok) throw new Error("Failed to fetch main goals");
+      const data = await res.json();
+      setMainGoals(data);
+    } catch (err) {
+      console.error("Error updating main goals", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  //   useEffect(() => {
-  //   if (mainGoals.length > 0 && !selectedMainGoal) {
-  //     fetchMainGoal();
-  //     setSelectedMainGoal(mainGoals[0]);
-  //   }
-  // }, [mainGoals, selectedMainGoal]);
-
-  // useEffect(() => {
-  //   fetchMainGoal().then(() => {
-  //     setSelectedMainGoal(mainGoals[0]);
-  //   }).finally(() => setIsLoading(false))
-  // }, []);
+  useEffect(() => {
+    if (mainGoals.length > 0) {
+      console.log("selected main goalも更新")
+      // 現在の選択中IDを保持していれば、それに一致するgoalを再設定
+      setSelectedMainGoal((prev) => {
+        if (!prev) return mainGoals[0]; // 初期選択
+        const updated = mainGoals.find((g) => g._id === prev._id);
+        return updated || mainGoals[0]; // 同じidが見つかれば更新
+      });
+    }
+  }, [mainGoals]);
 
   const onSelectGoal = (goalId) => {
     setSelectedMainGoal(mainGoals.find(g => g._id === goalId));
@@ -52,10 +64,9 @@ function App() {
   if (!isLoading && selectedMainGoal) {
     return (
       <Box sx={{ display: 'flex' }}>
-        <MenuDrawer mainGoals={mainGoals} handleSelectedGoal={onSelectGoal} selectedMainGoal={selectedMainGoal} />
+        <MenuDrawer mainGoals={mainGoals} handleSelectedGoal={onSelectGoal} selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals} />
         <Box sx={{ flexGrow: 1 }}>
-          <h1>{selectedMainGoal.title}</h1>
-          <MainGoal selectedMainGoal={selectedMainGoal} />
+          <MainGoal selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals} />
         </Box>
       </Box>
     )

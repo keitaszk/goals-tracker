@@ -10,13 +10,11 @@ import { Stack } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import 'emoji-picker-element';
 import { useRef } from 'react';
 import Popover from '@mui/material/Popover';
 
-export default function MainGoalDialog() {
+export default function MainGoalDialog({ updateMainGoals }) {
     const [open, setOpen] = useState(false);
     const [dueDate, setDate] = useState(dayjs());
     const [title, setTitle] = useState("");
@@ -66,6 +64,7 @@ export default function MainGoalDialog() {
             const data = await res.json();
             console.log("追加成功", data)
             handleClose();
+            updateMainGoals();
         } else {
             console.log("追加失敗")
         }
@@ -121,13 +120,11 @@ export default function MainGoalDialog() {
                         </div>
                         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                             <h3>Due date:</h3>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DatePicker
                                     label="Controlled picker"
                                     value={dueDate}
                                     onChange={(newDate) => setDate(newDate)}
                                 />
-                            </LocalizationProvider>
                         </div>
                         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                             <h3>Icon:</h3>

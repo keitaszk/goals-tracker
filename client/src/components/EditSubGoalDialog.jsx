@@ -10,11 +10,10 @@ import { Stack } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { useEffect } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 
-export default function EditSubGoalDialog({ selectedMainGoal, subGoal }) {
+export default function EditSubGoalDialog({ selectedMainGoal, subGoal, updateMainGoals }) {
     const mainGoalId = selectedMainGoal._id
     const [open, setOpen] = useState(false);
     const [dueDate, setDueDate] = useState(dayjs(subGoal.dueDate));
@@ -47,14 +46,19 @@ export default function EditSubGoalDialog({ selectedMainGoal, subGoal }) {
             const data = await res.json();
             console.log("subGoal編集成功", data)
             handleClose();
+            updateMainGoals();
         } else {
             console.log("subGoal編集失敗")
         }
     }
 
+    useEffect(() => {
+        console.log("dueDateが更新されました:", dueDate);
+    }, [dueDate]);
+
     return (
         <Fragment>
-            <EditIcon onClick={handleClickOpen}/>
+            <EditIcon onClick={handleClickOpen} />
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -70,13 +74,11 @@ export default function EditSubGoalDialog({ selectedMainGoal, subGoal }) {
                 <form action="" onSubmit={handleSubmit}>
                     <DialogContent>
                         <TextField id="outlined-basic" label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} />
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DatePicker
-                                label="Controlled picker"
-                                value={dueDate}
-                                onChange={(newDate) => setDueDate(newDate)}
-                            />
-                        </LocalizationProvider>
+                        <DatePicker
+                            label="Controlled picker"
+                            value={dueDate}
+                            onChange={(newDate) => setDueDate(newDate)}
+                        />
                     </DialogContent>
                     <Button type='submit'>Save</Button>
                     <Button onClick={handleClose}>Cancel</Button>

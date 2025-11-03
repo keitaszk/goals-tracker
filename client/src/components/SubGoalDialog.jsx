@@ -10,10 +10,8 @@ import { Stack } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
-export default function SubGoalDialog({ selectedMainGoal }) {
+export default function SubGoalDialog({ selectedMainGoal, updateMainGoals }) {
     const mainGoalId = selectedMainGoal._id
     const [open, setOpen] = useState(false);
     const [dueDate, setDueDate] = useState(dayjs());
@@ -46,6 +44,7 @@ export default function SubGoalDialog({ selectedMainGoal }) {
             const data = await res.json();
             console.log("追加成功", data)
             handleClose();
+            updateMainGoals();
         } else {
             console.log("追加失敗")
         }
@@ -78,13 +77,11 @@ export default function SubGoalDialog({ selectedMainGoal }) {
                 <form action="" onSubmit={handleSubmit}>
                     <DialogContent>
                         <TextField id="outlined-basic" label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} />
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DatePicker
-                                label="Controlled picker"
-                                value={dueDate}
-                                onChange={(newDate) => setDueDate(newDate)}
-                            />
-                        </LocalizationProvider>
+                        <DatePicker
+                            label="Controlled picker"
+                            value={dueDate}
+                            onChange={(newDate) => setDueDate(newDate)}
+                        />
                     </DialogContent>
                     <Button type='submit'>Create</Button>
                     <DialogActions>

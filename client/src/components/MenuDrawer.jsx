@@ -4,7 +4,7 @@ import MainGoalDialog from './MainGoalDialog';
 import EditMainGoalDialog from './EditMainGoalDialog';
 import DeleteMainGoal from './DeleteMainGoal';
 
-export default function MenuDrawer({ mainGoals, handleSelectedGoal, selectedMainGoal }) {
+export default function MenuDrawer({ mainGoals, handleSelectedGoal, selectedMainGoal, updateMainGoals }) {
     return (
         <div>
             <Drawer
@@ -37,7 +37,7 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, selectedMain
                     {mainGoals.map((mainGoal) => (
                         <ListItem
                             disablePadding
-                            key={mainGoal.id}
+                            key={mainGoal._id}
                             sx={{
                                 '&:hover .edit-icon': {
                                     opacity: 1,
@@ -58,12 +58,12 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, selectedMain
                                     }}
                                 // onClick={handleEditMaingoal}
                                 /> */}
-                                <EditMainGoalDialog mainGoal={mainGoal}  />
-                                <DeleteMainGoal mainGoal={mainGoal} />
+                                <EditMainGoalDialog mainGoal={mainGoal} updateMainGoals={updateMainGoals}/>
+                                <DeleteMainGoal mainGoal={mainGoal} updateMainGoals={updateMainGoals}/>
                             </ListItemButton>
                         </ListItem>
                     ))}
-                    <MainGoalDialog />
+                    <MainGoalDialog updateMainGoals={updateMainGoals}/>
                 </List>
             </Drawer>
         </div>

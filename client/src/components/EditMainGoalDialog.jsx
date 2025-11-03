@@ -10,11 +10,9 @@ import { Stack } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import EditIcon from '@mui/icons-material/Edit';
 
-export default function EditMainGoalDialog({ mainGoal }) {
+export default function EditMainGoalDialog({ mainGoal, updateMainGoals }) {
     const [open, setOpen] = useState(false);
     const [dueDate, setDate] = useState(dayjs(mainGoal.dueDate));
     const [title, setTitle] = useState(mainGoal.title);
@@ -50,6 +48,7 @@ export default function EditMainGoalDialog({ mainGoal }) {
             const data = await res.json();
             console.log("編集成功", data)
             handleClose();
+            updateMainGoals();
         } else {
             console.log("編集失敗")
         }
@@ -75,13 +74,11 @@ export default function EditMainGoalDialog({ mainGoal }) {
                 <form action="" onSubmit={handleEdit}>
                     <DialogContent>
                         <TextField id="outlined-basic" label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} />
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
                                 label="Controlled picker"
                                 value={dueDate}
                                 onChange={(newDate) => setDate(newDate)}
                             />
-                        </LocalizationProvider>
                         <TextField id="outlined-basic" label="Emoji" variant="outlined" value={emoji} onChange={(e) => setEmoji(e.target.value)} />
                         <TextField id="outlined-basic" label="Color" variant="outlined" value={themeColor} onChange={(e) => setThemeColor(e.target.value)} />
                     </DialogContent>

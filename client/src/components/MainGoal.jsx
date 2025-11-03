@@ -3,7 +3,7 @@ import GoalStepper from "./GoalStepper"
 import SubGoalCard from "./SubGoalCard"
 import { Box } from "@mui/material"
 
-export default function MainGoal({ selectedMainGoal }) {
+export default function MainGoal({ selectedMainGoal, updateMainGoals }) {
     return (
         <>
             <Box sx={{ flex: 1, p: 6, mx: "auto" }}>
@@ -19,8 +19,8 @@ export default function MainGoal({ selectedMainGoal }) {
                         textAlign: "left"
                     }}
                 >
-                    <SubGoalCard selectedMainGoal={selectedMainGoal} />
-                    <AddSubGoal selectedMainGoal={selectedMainGoal}/>
+                    <SubGoalCard selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals}/>
+                    <AddSubGoal selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals} />
                 </Box>
             </Box>
         </>

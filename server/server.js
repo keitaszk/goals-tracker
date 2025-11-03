@@ -77,8 +77,8 @@ app.patch("/api/subgoals/:subGoalId", async (req, res) => {
 
         const subGoal = mainGoal.subGoals.id(subGoalId)
         subGoal.completed = !subGoal.completed;
-
         await mainGoal.save();
+        res.json(mainGoal);
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: "Server error" });

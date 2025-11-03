@@ -2,17 +2,17 @@ import { Button, Stack, Card, CardContent, Typography, CardActionArea } from '@m
 import EditSubGoalDialog from './EditSubGoalDialog';
 import DeleteSubGoal from './DeleteSubGoal';
 
-function SubGoalCard({ selectedMainGoal }) {
+function SubGoalCard({ selectedMainGoal, updateMainGoals }) {
     const subGoals = selectedMainGoal.subGoals
 
     const toggleSubGoal = async (subGoalId) => {
         try {
-            console.log(subGoalId)
             const res = await fetch(
                 `http://localhost:3000/api/subgoals/${subGoalId}`,
                 { method: "PATCH", headers: { "Content-Type": "application/json" } }
             );
             if (res.ok) {
+                updateMainGoals();
                 console.log("subGoalToggle fetch成功");
             } else {
                 console.error();
@@ -25,7 +25,7 @@ function SubGoalCard({ selectedMainGoal }) {
     return (
         <>
             {subGoals.map((subGoal, index) => (
-                <Card key={index} sx={{ backgroundColor: subGoal.completed && "#f3e8ff" }}>
+                <Card key={subGoal._id} sx={{ backgroundColor: subGoal.completed && "#f3e8ff" }}>
                     <CardActionArea disableRipple>
                         <CardContent
                         >
@@ -37,8 +37,8 @@ function SubGoalCard({ selectedMainGoal }) {
                                     }}>
                                     {index + 1}. {subGoal.title}
                                 </Typography>
-                                <EditSubGoalDialog subGoal={subGoal} selectedMainGoal={selectedMainGoal} />
-                                <DeleteSubGoal subGoal={subGoal} selectedMainGoal={selectedMainGoal} />
+                                <EditSubGoalDialog subGoal={subGoal} selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals}/>
+                                <DeleteSubGoal subGoal={subGoal} selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals}/>
                                 <Button
                                     variant={subGoal.completed ? "contained" : "outlined"}
                                     onClick={() => toggleSubGoal(subGoal._id)}
