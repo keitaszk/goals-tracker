@@ -13,7 +13,7 @@ import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
-export default function SubGoalDialog({ updateMainGoals, selectedMainGoal }) {
+export default function SubGoalDialog({ selectedMainGoal }) {
     const mainGoalId = selectedMainGoal._id
     const [open, setOpen] = useState(false);
     const [dueDate, setDueDate] = useState(dayjs());
@@ -45,7 +45,6 @@ export default function SubGoalDialog({ updateMainGoals, selectedMainGoal }) {
         if (res.ok) {
             const data = await res.json();
             console.log("追加成功", data)
-            updateMainGoals();
             handleClose();
         } else {
             console.log("追加失敗")

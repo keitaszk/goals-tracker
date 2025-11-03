@@ -3,7 +3,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import { Stack } from '@mui/material';
@@ -12,13 +12,20 @@ import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import 'emoji-picker-element';
+import { useRef } from 'react';
+import Popover from '@mui/material/Popover';
 
-export default function MainGoalDialog({fetchMainGoal}) {
+export default function MainGoalDialog() {
     const [open, setOpen] = useState(false);
     const [dueDate, setDate] = useState(dayjs());
     const [title, setTitle] = useState("");
     const [emoji, setEmoji] = useState("");
     const [themeColor, setThemeColor] = useState("");
+    const [isPickerVisible, setPickerVisible] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const pickerRef = useRef(null);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -27,6 +34,16 @@ export default function MainGoalDialog({fetchMainGoal}) {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleAnchorClose = () => {
+        setAnchorEl(null);
+    }
+
+    const openEmoji = Boolean(anchorEl);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -48,12 +65,29 @@ export default function MainGoalDialog({fetchMainGoal}) {
         if (res.ok) {
             const data = await res.json();
             console.log("追加成功", data)
-            fetchMainGoal();
             handleClose();
         } else {
             console.log("追加失敗")
         }
     }
+
+    useEffect(() => {
+        const picker = pickerRef.current;
+        if (!picker) return;
+
+        const handleEmojiClick = (event) => {
+            const selectedEmoji = event.detail.unicode;
+            setEmoji(selectedEmoji); // 絵文字を保存
+            setPickerVisible(false); // ピッカーを閉じる
+            setAnchorEl(null);
+        };
+
+        picker.addEventListener("emoji-click", handleEmojiClick);
+
+        return () => {
+            picker.removeEventListener("emoji-click", handleEmojiClick);
+        };
+    }, [openEmoji]); // ピッカーが開いたときにリスナーを登録
 
     return (
         <Fragment>
@@ -81,16 +115,47 @@ export default function MainGoalDialog({fetchMainGoal}) {
                 </Stack>
                 <form action="" onSubmit={handleSubmit}>
                     <DialogContent>
-                        <TextField id="outlined-basic" label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} />
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DatePicker
-                                label="Controlled picker"
-                                value={dueDate}
-                                onChange={(newDate) => setDate(newDate)}
-                            />
-                        </LocalizationProvider>
-                        <TextField id="outlined-basic" label="Emoji" variant="outlined" value={emoji} onChange={(e) => setEmoji(e.target.value)} />
-                        <TextField id="outlined-basic" label="Color" variant="outlined" value={themeColor} onChange={(e) => setThemeColor(e.target.value)} />
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                            <h3>Title:</h3>
+                            <TextField id="outlined-basic" label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} />
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                            <h3>Due date:</h3>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DatePicker
+                                    label="Controlled picker"
+                                    value={dueDate}
+                                    onChange={(newDate) => setDate(newDate)}
+                                />
+                            </LocalizationProvider>
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                            <h3>Icon:</h3>
+                            <span style={{ fontSize: "24px", marginLeft: "8px" }}>{emoji}</span>
+                            {/* <Button onClick={() => setPickerVisible(!isPickerVisible)}>{isPickerVisible ? "Close picker" : "Open picker"}</Button>
+                            {isPickerVisible && (
+
+                                <emoji-picker ref={pickerRef}></emoji-picker>
+                            )} */}
+
+                            <Button onClick={handleClick}>{isPickerVisible ? "Close picker" : "Open picker"}</Button>
+                            <Popover
+                                open={openEmoji}
+                                anchorEl={anchorEl}
+                                onClose={handleAnchorClose}
+                                disablePortal
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'left',
+                                }}
+                            >
+                                <emoji-picker ref={pickerRef}></emoji-picker>
+                            </Popover>
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                            <h3>Color:</h3>
+                            <TextField id="outlined-basic" label="Color" variant="outlined" value={themeColor} onChange={(e) => setThemeColor(e.target.value)} />
+                        </div>
                     </DialogContent>
                     <Button type='submit'>Create</Button>
                     <DialogActions>

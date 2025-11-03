@@ -2,7 +2,7 @@ import DeleteIcon from '@mui/icons-material/Delete'; import { useState } from 'r
 import { Button } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 
-export default function DeleteMainGoal({ mainGoal, updateMainGoals }) {
+export default function DeleteMainGoal({ mainGoal }) {
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -24,7 +24,6 @@ export default function DeleteMainGoal({ mainGoal, updateMainGoals }) {
         if (res.ok) {
             const data = await res.json();
             console.log("消去成功", data)
-            updateMainGoals();
             handleClose();
         } else {
             console.log("消去失敗")

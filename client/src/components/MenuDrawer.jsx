@@ -4,7 +4,7 @@ import MainGoalDialog from './MainGoalDialog';
 import EditMainGoalDialog from './EditMainGoalDialog';
 import DeleteMainGoal from './DeleteMainGoal';
 
-export default function MenuDrawer({ mainGoals, handleSelectedGoal, selectedMainGoal, updateMainGoals }) {
+export default function MenuDrawer({ mainGoals, handleSelectedGoal, selectedMainGoal }) {
     return (
         <div>
             <Drawer
@@ -58,12 +58,12 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, selectedMain
                                     }}
                                 // onClick={handleEditMaingoal}
                                 /> */}
-                                <EditMainGoalDialog mainGoal={mainGoal} updateMainGoals={updateMainGoals} />
-                                <DeleteMainGoal mainGoal={mainGoal} updateMainGoals={updateMainGoals}/>
+                                <EditMainGoalDialog mainGoal={mainGoal}  />
+                                <DeleteMainGoal mainGoal={mainGoal} />
                             </ListItemButton>
                         </ListItem>
                     ))}
-                    <MainGoalDialog updateMainGoals={updateMainGoals} />
+                    <MainGoalDialog />
                 </List>
             </Drawer>
         </div>

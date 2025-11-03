@@ -2,7 +2,7 @@ import { Button, Stack, Card, CardContent, Typography, CardActionArea } from '@m
 import EditSubGoalDialog from './EditSubGoalDialog';
 import DeleteSubGoal from './DeleteSubGoal';
 
-function SubGoalCard({ selectedMainGoal, updateMainGoals }) {
+function SubGoalCard({ selectedMainGoal }) {
     const subGoals = selectedMainGoal.subGoals
 
     const toggleSubGoal = async (subGoalId) => {
@@ -14,7 +14,6 @@ function SubGoalCard({ selectedMainGoal, updateMainGoals }) {
             );
             if (res.ok) {
                 console.log("subGoalToggle fetch成功");
-                updateMainGoals();
             } else {
                 console.error();
             }
@@ -38,8 +37,8 @@ function SubGoalCard({ selectedMainGoal, updateMainGoals }) {
                                     }}>
                                     {index + 1}. {subGoal.title}
                                 </Typography>
-                                <EditSubGoalDialog subGoal={subGoal} selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals} />
-                                <DeleteSubGoal subGoal={subGoal} selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals} />
+                                <EditSubGoalDialog subGoal={subGoal} selectedMainGoal={selectedMainGoal} />
+                                <DeleteSubGoal subGoal={subGoal} selectedMainGoal={selectedMainGoal} />
                                 <Button
                                     variant={subGoal.completed ? "contained" : "outlined"}
                                     onClick={() => toggleSubGoal(subGoal._id)}

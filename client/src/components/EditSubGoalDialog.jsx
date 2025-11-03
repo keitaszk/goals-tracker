@@ -14,7 +14,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import EditIcon from '@mui/icons-material/Edit';
 
-export default function EditSubGoalDialog({ updateMainGoals, selectedMainGoal, subGoal }) {
+export default function EditSubGoalDialog({ selectedMainGoal, subGoal }) {
     const mainGoalId = selectedMainGoal._id
     const [open, setOpen] = useState(false);
     const [dueDate, setDueDate] = useState(dayjs(subGoal.dueDate));
@@ -46,7 +46,6 @@ export default function EditSubGoalDialog({ updateMainGoals, selectedMainGoal, s
         if (res.ok) {
             const data = await res.json();
             console.log("subGoal編集成功", data)
-            updateMainGoals();
             handleClose();
         } else {
             console.log("subGoal編集失敗")

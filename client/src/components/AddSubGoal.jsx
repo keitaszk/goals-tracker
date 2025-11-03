@@ -1,7 +1,7 @@
 import { Box, Card, CardContent, CardActionArea } from '@mui/material';
 import SubGoalDialog from './SubGoalDialog';
 
-function AddSubGoal({ updateMainGoals, selectedMainGoal }) {
+function AddSubGoal({ selectedMainGoal }) {
     return (
         <Box
             sx={{
@@ -19,7 +19,7 @@ function AddSubGoal({ updateMainGoals, selectedMainGoal }) {
                             justifyContent: "center", // centers horizontally
                             alignItems: "center",     // centers vertically
                         }}>
-                        <SubGoalDialog updateMainGoals={updateMainGoals} selectedMainGoal={selectedMainGoal} />
+                        <SubGoalDialog selectedMainGoal={selectedMainGoal} />
                     </CardContent>
                 </CardActionArea>
             </Card>

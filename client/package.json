@@ -16,6 +16,8 @@
     "@mui/material": "^7.3.4",
     "@mui/x-date-pickers": "^8.15.0",
     "dayjs": "^1.11.18",
+    "emoji-picker-element": "^1.27.0",
+    "emoji-picker-react": "^4.15.0",
     "express": "^5.1.0",
     "mongoose": "^8.19.2",
     "react": "^19.1.1",
