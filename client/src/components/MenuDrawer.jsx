@@ -1,10 +1,9 @@
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import { ListSubheader, Drawer, List, Divider, ListItemButton, ListItem, ListItemIcon, ListItemText, IconButton } from '@mui/material';
+import { ListSubheader, Drawer, List, ListItemButton, ListItem, ListItemIcon, ListItemText, } from '@mui/material';
 import MainGoalDialog from './MainGoalDialog';
 import EditMainGoalDialog from './EditMainGoalDialog';
 import DeleteMainGoal from './DeleteMainGoal';
 
-export default function MenuDrawer({ mainGoals, handleSelectedGoal, selectedMainGoal, updateMainGoals }) {
+export default function MenuDrawer({ mainGoals, handleSelectedGoal, updateMainGoals }) {
     return (
         <div>
             <Drawer
@@ -13,24 +12,12 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, selectedMain
                     width: "250px", '& .MuiDrawer-paper': {
                         width: "250px",
                         boxSizing: 'border-box',
-                        backgroundColor: selectedMainGoal.themeColor,
+                        backgroundColor: "#f3e8ff",
                     },
                 }}>
-                <List>
-                    <ListItem disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <FormatListBulletedIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="All Goals" />
-                            {/* for the calendar view */}
-                        </ListItemButton>
-                    </ListItem>
-                </List>
-                <Divider />
                 <List
                     subheader={
-                        <ListSubheader component="div" sx={{ textAlign: "left", backgroundColor: selectedMainGoal.themeColor }}>
+                        <ListSubheader component="div" sx={{ textAlign: "left", backgroundColor: "#f3e8ff" }}>
                             Main Goals
                         </ListSubheader>
                     }>
@@ -49,15 +36,6 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, selectedMain
                                     {mainGoal.emoji}
                                 </ListItemIcon>
                                 <ListItemText primary={mainGoal.title} />
-                                {/* <EditIcon
-                                    className="edit-icon"
-                                    fontSize="small"
-                                    sx={{
-                                        opacity: 0,
-                                        transition: 'opacity 0.2s ease, transform 0.2s ease',
-                                    }}
-                                // onClick={handleEditMaingoal}
-                                /> */}
                                 <EditMainGoalDialog mainGoal={mainGoal} updateMainGoals={updateMainGoals}/>
                                 <DeleteMainGoal mainGoal={mainGoal} updateMainGoals={updateMainGoals}/>
                             </ListItemButton>

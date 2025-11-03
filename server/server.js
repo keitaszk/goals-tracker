@@ -20,7 +20,6 @@ const mainGoalSchema = new mongoose.Schema({
     dueDate: { type: Date },
     completed: { type: Boolean, default: false },
     emoji: { type: String },
-    themeColor: { type: String },
     subGoals: [subGoalSchema],
 })
 

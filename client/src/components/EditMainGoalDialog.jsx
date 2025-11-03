@@ -17,7 +17,6 @@ export default function EditMainGoalDialog({ mainGoal, updateMainGoals }) {
     const [dueDate, setDate] = useState(dayjs(mainGoal.dueDate));
     const [title, setTitle] = useState(mainGoal.title);
     const [emoji, setEmoji] = useState(mainGoal.emoji);
-    const [themeColor, setThemeColor] = useState(mainGoal.themeColor);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -34,7 +33,6 @@ export default function EditMainGoalDialog({ mainGoal, updateMainGoals }) {
             title,
             dueDate: new Date(dueDate),
             emoji,
-            themeColor
         };
 
         console.log("送信内容:", editedMainGoal);
@@ -80,7 +78,6 @@ export default function EditMainGoalDialog({ mainGoal, updateMainGoals }) {
                                 onChange={(newDate) => setDate(newDate)}
                             />
                         <TextField id="outlined-basic" label="Emoji" variant="outlined" value={emoji} onChange={(e) => setEmoji(e.target.value)} />
-                        <TextField id="outlined-basic" label="Color" variant="outlined" value={themeColor} onChange={(e) => setThemeColor(e.target.value)} />
                     </DialogContent>
                     <Button type='submit'>Save</Button>
                     <DialogActions>

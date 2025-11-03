@@ -52,10 +52,6 @@ export default function EditSubGoalDialog({ selectedMainGoal, subGoal, updateMai
         }
     }
 
-    useEffect(() => {
-        console.log("dueDateが更新されました:", dueDate);
-    }, [dueDate]);
-
     return (
         <Fragment>
             <EditIcon onClick={handleClickOpen} />

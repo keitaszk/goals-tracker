@@ -19,8 +19,6 @@ export default function MainGoalDialog({ updateMainGoals }) {
     const [dueDate, setDate] = useState(dayjs());
     const [title, setTitle] = useState("");
     const [emoji, setEmoji] = useState("");
-    const [themeColor, setThemeColor] = useState("");
-    const [isPickerVisible, setPickerVisible] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
 
     const pickerRef = useRef(null);
@@ -50,7 +48,6 @@ export default function MainGoalDialog({ updateMainGoals }) {
             title,
             dueDate: new Date(dueDate),
             emoji,
-            themeColor
         };
 
         console.log("送信内容:", newMainGoal);
@@ -77,7 +74,6 @@ export default function MainGoalDialog({ updateMainGoals }) {
         const handleEmojiClick = (event) => {
             const selectedEmoji = event.detail.unicode;
             setEmoji(selectedEmoji); // 絵文字を保存
-            setPickerVisible(false); // ピッカーを閉じる
             setAnchorEl(null);
         };
 
@@ -107,26 +103,25 @@ export default function MainGoalDialog({ updateMainGoals }) {
                 aria-describedby="alert-dialog-description"
             >
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
-                    <DialogTitle id="alert-dialog-title">
-                        {"Add New Main Goal"}
+                    <DialogTitle id="alert-dialog-title" sx={{ fontWeight: "bold" }}>
+                        {"New Main Goal"}
                     </DialogTitle>
                     <CloseIcon sx={{ mr: 2 }} onClick={handleClose} />
                 </Stack>
                 <form action="" onSubmit={handleSubmit}>
                     <DialogContent>
-                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                        <div style={{ display: "grid", alignItems: "center", gap: "12px", gridTemplateColumns: "100px 1fr" }}>
                             <h3>Title:</h3>
-                            <TextField id="outlined-basic" label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} />
+                            <TextField id="outlined-basic" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} />
                         </div>
-                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                        <div style={{ display: "grid", alignItems: "center", gap: "12px", gridTemplateColumns: "100px 1fr" }}>
                             <h3>Due date:</h3>
-                                <DatePicker
-                                    label="Controlled picker"
-                                    value={dueDate}
-                                    onChange={(newDate) => setDate(newDate)}
-                                />
+                            <DatePicker
+                                value={dueDate}
+                                onChange={(newDate) => setDate(newDate)}
+                            />
                         </div>
-                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px", }}>
                             <h3>Icon:</h3>
                             <span style={{ fontSize: "24px", marginLeft: "8px" }}>{emoji}</span>
                             {/* <Button onClick={() => setPickerVisible(!isPickerVisible)}>{isPickerVisible ? "Close picker" : "Open picker"}</Button>
@@ -135,7 +130,17 @@ export default function MainGoalDialog({ updateMainGoals }) {
                                 <emoji-picker ref={pickerRef}></emoji-picker>
                             )} */}
 
-                            <Button onClick={handleClick}>{isPickerVisible ? "Close picker" : "Open picker"}</Button>
+                            <Button
+                                onClick={handleClick}
+                                variant="contained"
+                                sx={{
+                                    backgroundColor: "#eeeeeeff",
+                                    color: "#000",
+                                    textTransform: "none",      // ← ボタン内の文字をそのまま表示
+                                    "&:hover": {
+                                        backgroundColor: "#dcdcdcff", // ← 少し濃くしてホバー効果
+                                    },
+                                }}>Open Picker</Button>
                             <Popover
                                 open={openEmoji}
                                 anchorEl={anchorEl}
@@ -145,16 +150,49 @@ export default function MainGoalDialog({ updateMainGoals }) {
                                     vertical: 'bottom',
                                     horizontal: 'left',
                                 }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'left',
+                                }}
+                                sx={{ transform: "translate(150px, -250px)" }}
                             >
                                 <emoji-picker ref={pickerRef}></emoji-picker>
                             </Popover>
                         </div>
-                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                            <h3>Color:</h3>
-                            <TextField id="outlined-basic" label="Color" variant="outlined" value={themeColor} onChange={(e) => setThemeColor(e.target.value)} />
-                        </div>
                     </DialogContent>
-                    <Button type='submit'>Create</Button>
+                    <div style={{ display: "flex", justifyContent: "flex-end", marginRight: "20px" }}>
+                        <Button
+                            variant="text"
+                            onClick={handleClose}
+                            sx={{
+                                color: "#555", // 通常時の文字色
+                                textTransform: "none",
+                                fontWeight: 500,
+                                "&:hover": {
+                                    backgroundColor: "rgba(0,0,0,0.04)", // ← 薄いグレー背景
+                                },
+                                "&:active": {
+                                    backgroundColor: "rgba(0,0,0,0.08)", // ← クリック時に少し濃く
+                                    outline: "none"
+                                },
+                            }}
+                        >
+                            Cancel
+                        </Button>
+                        <Button type='submit' variant="contained" sx={{
+                            backgroundColor: "#a855f7", // ← 紫（Tailwindのpurple-500）
+                            color: "white",
+                            textTransform: "none", // ← テキストをそのまま表示
+                            fontWeight: 600,
+                            "&:hover": {
+                                backgroundColor: "#9333ea", // ← 少し濃い紫
+                            },
+                            "&:active": {
+                                outline: "none"
+                            },
+                            "&:focus": { outline: "none" },
+                        }}>Create</Button>
+                    </div>
                     <DialogActions>
                     </DialogActions>
                 </form>
