@@ -69,21 +69,59 @@ export default function SubGoalDialog({ selectedMainGoal, updateMainGoals }) {
                 aria-describedby="alert-dialog-description"
             >
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
-                    <DialogTitle id="alert-dialog-title">
-                        {"Add New Subgoal"}
+                    <DialogTitle id="alert-dialog-title" sx={{ fontWeight: "bold" }}>
+                        {"New Subgoal"}
                     </DialogTitle>
                     <CloseIcon sx={{ mr: 2 }} onClick={handleClose} />
                 </Stack>
                 <form action="" onSubmit={handleSubmit}>
                     <DialogContent>
-                        <TextField id="outlined-basic" label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} />
-                        <DatePicker
-                            label="Controlled picker"
-                            value={dueDate}
-                            onChange={(newDate) => setDueDate(newDate)}
-                        />
+                        <div style={{ display: "grid", alignItems: "center", gap: "12px", gridTemplateColumns: "100px 1fr" }}>
+                            <h3>Title:</h3>
+                            <TextField id="outlined-basic" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} />
+                        </div>
+                        <div style={{ display: "grid", alignItems: "center", gap: "12px", gridTemplateColumns: "100px 1fr" }}>
+                            <h3>Due date:</h3>
+                            <DatePicker
+                                value={dueDate}
+                                onChange={(newDate) => setDueDate(newDate)}
+                            />
+                        </div>
                     </DialogContent>
-                    <Button type='submit'>Create</Button>
+                    <div style={{ display: "flex", justifyContent: "flex-end", marginRight: "20px" }}>
+                        <Button
+                            variant="text"
+                            onClick={handleClose}
+                            sx={{
+                                color: "#555", // 通常時の文字色
+                                textTransform: "none",
+                                fontWeight: 500,
+                                marginRight: "5px",
+                                "&:hover": {
+                                    backgroundColor: "rgba(0,0,0,0.04)", // ← 薄いグレー背景
+                                },
+                                "&:active": {
+                                    backgroundColor: "rgba(0,0,0,0.08)", // ← クリック時に少し濃く
+                                    outline: "none"
+                                },
+                            }}
+                        >
+                            Cancel
+                        </Button>
+                        <Button type='submit' variant="contained" sx={{
+                            backgroundColor: "#a855f7", // ← 紫（Tailwindのpurple-500）
+                            color: "white",
+                            textTransform: "none", // ← テキストをそのまま表示
+                            fontWeight: 600,
+                            "&:hover": {
+                                backgroundColor: "#9333ea", // ← 少し濃い紫
+                            },
+                            "&:active": {
+                                outline: "none"
+                            },
+                            "&:focus": { outline: "none" },
+                        }}>Create</Button>
+                    </div>
                     <DialogActions>
                     </DialogActions>
                 </form>

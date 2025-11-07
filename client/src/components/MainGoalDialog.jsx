@@ -16,7 +16,7 @@ import Popover from '@mui/material/Popover';
 
 export default function MainGoalDialog({ updateMainGoals }) {
     const [open, setOpen] = useState(false);
-    const [dueDate, setDate] = useState(dayjs());
+    const [dueDate, setDUeDate] = useState(dayjs());
     const [title, setTitle] = useState("");
     const [emoji, setEmoji] = useState("");
     const [anchorEl, setAnchorEl] = useState(null);
@@ -118,17 +118,12 @@ export default function MainGoalDialog({ updateMainGoals }) {
                             <h3>Due date:</h3>
                             <DatePicker
                                 value={dueDate}
-                                onChange={(newDate) => setDate(newDate)}
+                                onChange={(newDate) => setDueDate(newDate)}
                             />
                         </div>
                         <div style={{ display: "flex", alignItems: "center", gap: "12px", }}>
                             <h3>Icon:</h3>
                             <span style={{ fontSize: "24px", marginLeft: "8px" }}>{emoji}</span>
-                            {/* <Button onClick={() => setPickerVisible(!isPickerVisible)}>{isPickerVisible ? "Close picker" : "Open picker"}</Button>
-                            {isPickerVisible && (
-
-                                <emoji-picker ref={pickerRef}></emoji-picker>
-                            )} */}
 
                             <Button
                                 onClick={handleClick}
@@ -140,7 +135,11 @@ export default function MainGoalDialog({ updateMainGoals }) {
                                     "&:hover": {
                                         backgroundColor: "#dcdcdcff", // ← 少し濃くしてホバー効果
                                     },
-                                }}>Open Picker</Button>
+                                    "&:active": {
+                                        outline: "none"
+                                    },
+                                    "&:focus": { outline: "none" },
+                                }}>Change Icon</Button>
                             <Popover
                                 open={openEmoji}
                                 anchorEl={anchorEl}
@@ -168,6 +167,7 @@ export default function MainGoalDialog({ updateMainGoals }) {
                                 color: "#555", // 通常時の文字色
                                 textTransform: "none",
                                 fontWeight: 500,
+                                marginRight: "5px",
                                 "&:hover": {
                                     backgroundColor: "rgba(0,0,0,0.04)", // ← 薄いグレー背景
                                 },
