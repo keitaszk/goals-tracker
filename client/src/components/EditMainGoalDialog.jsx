@@ -90,34 +90,6 @@ export default function EditMainGoalDialog({ mainGoal, updateMainGoals }) {
             <EditIcon
                 onClick={handleClickOpen}
             />
-            {/* <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <Stack direction="row" justifyContent="space-between" alignItems="center">
-                    <DialogTitle id="alert-dialog-title">
-                        {"Add New Main Goal"}
-                    </DialogTitle>
-                    <CloseIcon sx={{ mr: 2 }} onClick={handleClose} />
-                </Stack>
-                <form action="" onSubmit={handleEdit}>
-                    <DialogContent>
-                        <TextField id="outlined-basic" label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} />
-                        <DatePicker
-                            label="Controlled picker"
-                            value={dueDate}
-                            onChange={(newDate) => setDate(newDate)}
-                        />
-                        <TextField id="outlined-basic" label="Emoji" variant="outlined" value={emoji} onChange={(e) => setEmoji(e.target.value)} />
-                    </DialogContent>
-                    <Button type='submit'>Save</Button>
-                    <DialogActions>
-                    </DialogActions>
-                </form>
-            </Dialog> */}
-
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -146,12 +118,6 @@ export default function EditMainGoalDialog({ mainGoal, updateMainGoals }) {
                         <div style={{ display: "flex", alignItems: "center", gap: "12px", }}>
                             <h3>Icon:</h3>
                             <span style={{ fontSize: "24px", marginLeft: "8px" }}>{emoji}</span>
-                            {/* <Button onClick={() => setPickerVisible(!isPickerVisible)}>{isPickerVisible ? "Close picker" : "Open picker"}</Button>
-                            {isPickerVisible && (
-
-                                <emoji-picker ref={pickerRef}></emoji-picker>
-                            )} */}
-
                             <Button
                                 onClick={handleClick}
                                 variant="contained"

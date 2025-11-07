@@ -2,8 +2,22 @@ import { ListSubheader, Drawer, List, ListItemButton, ListItem, ListItemIcon, Li
 import MainGoalDialog from './MainGoalDialog';
 import EditMainGoalDialog from './EditMainGoalDialog';
 import DeleteMainGoal from './DeleteMainGoal';
+import { useState } from 'react';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Popover from '@mui/material/Popover';
+import IconButton from '@mui/material/IconButton';
 
 export default function MenuDrawer({ mainGoals, handleSelectedGoal, updateMainGoals }) {
+
+
+    const [anchorEl, setAnchorEl] = useState(null);
+    const openEmoji = Boolean(anchorEl);
+    const handleAnchorClose = () => {
+        setAnchorEl(null);
+    };
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
     return (
         <div>
             <Drawer
@@ -36,12 +50,33 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, updateMainGo
                                     {mainGoal.emoji}
                                 </ListItemIcon>
                                 <ListItemText primary={mainGoal.title} />
-                                <EditMainGoalDialog mainGoal={mainGoal} updateMainGoals={updateMainGoals}/>
-                                <DeleteMainGoal mainGoal={mainGoal} updateMainGoals={updateMainGoals}/>
+                                <MoreVertIcon
+                                    onClick={(e) => {
+                                        e.preventDefault();   // ← これが重要
+                                        handleClick(e);
+                                    }}
+                                    className="actions" />
+                                <Popover
+                                    open={openEmoji}
+                                    anchorEl={anchorEl}
+                                    onClose={handleAnchorClose}
+                                    disablePortal
+                                    anchorOrigin={{
+                                        vertical: 'bottom',
+                                        horizontal: 'left',
+                                    }}
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'left',
+                                    }}
+                                >
+                                    <EditMainGoalDialog mainGoal={mainGoal} updateMainGoals={updateMainGoals} />
+                                    <DeleteMainGoal mainGoal={mainGoal} updateMainGoals={updateMainGoals} />
+                                </Popover>
                             </ListItemButton>
                         </ListItem>
                     ))}
-                    <MainGoalDialog updateMainGoals={updateMainGoals}/>
+                    <MainGoalDialog updateMainGoals={updateMainGoals} />
                 </List>
             </Drawer>
         </div>
