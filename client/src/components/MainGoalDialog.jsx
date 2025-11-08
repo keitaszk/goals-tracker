@@ -16,7 +16,7 @@ import Popover from '@mui/material/Popover';
 
 export default function MainGoalDialog({ updateMainGoals }) {
     const [open, setOpen] = useState(false);
-    const [dueDate, setDUeDate] = useState(dayjs());
+    const [dueDate, setDueDate] = useState(dayjs());
     const [title, setTitle] = useState("");
     const [emoji, setEmoji] = useState("");
     const [anchorEl, setAnchorEl] = useState(null);
@@ -139,7 +139,7 @@ export default function MainGoalDialog({ updateMainGoals }) {
                                         outline: "none"
                                     },
                                     "&:focus": { outline: "none" },
-                                }}>Change Icon</Button>
+                                }}>Select Icon</Button>
                             <Popover
                                 open={openEmoji}
                                 anchorEl={anchorEl}

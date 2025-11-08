@@ -59,6 +59,7 @@ function App() {
 
   const onSelectGoal = (goalId) => {
     setSelectedMainGoal(mainGoals.find(g => g._id === goalId));
+    console.log(`selected main goal: ${selectedMainGoal.title}`)
   }
 
   if (!isLoading && selectedMainGoal) {

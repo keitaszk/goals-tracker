@@ -5,32 +5,25 @@ import "../App.css"
 import Box from '@mui/material/Box';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
-import Dialog from '@mui/material/Dialog';
-import Popover from '@mui/material/Popover';
+import Menu from '@mui/material/Menu';
 
 function SubGoalCard({ selectedMainGoal, updateMainGoals }) {
     const subGoals = selectedMainGoal.subGoals
 
-    const [open, setOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [activeSubgoal, setActiveSubgoal] = useState(null);
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const handleAnchorClose = () => {
-        setAnchorEl(null);
-    };
-
-    const handleClick = (event) => {
+    const handleClick = (event, subGoal) => {
         setAnchorEl(event.currentTarget);
+        setActiveSubgoal(subGoal)
     };
 
-    const openEmoji = Boolean(anchorEl);
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+        setActiveSubgoal(null);
+    };
+
+    const openMenu = Boolean(anchorEl);
 
     const toggleSubGoal = async (subGoalId) => {
         try {
@@ -78,24 +71,23 @@ function SubGoalCard({ selectedMainGoal, updateMainGoals }) {
                                             },
                                         }}
                                     >Completed</Button>
-                                    <MoreVertIcon onClick={handleClick} className="actions" />
-                                    <Popover
-                                        open={openEmoji}
+                                    <MoreVertIcon onClick={(e) => handleClick(e, subGoal)} className="actions" />
+                                    <Menu
                                         anchorEl={anchorEl}
-                                        onClose={handleAnchorClose}
-                                        disablePortal
-                                        anchorOrigin={{
-                                            vertical: 'bottom',
-                                            horizontal: 'left',
-                                        }}
-                                        transformOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'left',
+                                        open={openMenu}
+                                        onClose={handleMenuClose}
+                                        PaperProps={{
+                                            elevation: 4,
+                                            sx: {
+                                                borderRadius: 2,
+                                                mt: 1,
+                                                minWidth: 180
+                                            }
                                         }}
                                     >
-                                        <EditSubGoalDialog subGoal={subGoal} selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals} />
-                                        <DeleteSubGoal subGoal={subGoal} selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals} />
-                                    </Popover>
+                                        <EditSubGoalDialog subGoal={activeSubgoal} selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals} handleMenuClose={handleMenuClose} />
+                                        <DeleteSubGoal subGoal={activeSubgoal} selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals} handleMenuClose={handleMenuClose} />
+                                    </Menu>
                                 </Box>
                             </Stack>
                             <Typography variant="body2" color="text.secondary">

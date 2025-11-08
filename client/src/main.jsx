@@ -10,7 +10,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <CssBaseline />
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <App /> {/* 全体を包む */}
+      <App /> 
     </LocalizationProvider>
   </StrictMode>,
 )

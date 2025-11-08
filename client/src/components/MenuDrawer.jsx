@@ -1,23 +1,29 @@
-import { ListSubheader, Drawer, List, ListItemButton, ListItem, ListItemIcon, ListItemText, } from '@mui/material';
+import { ListSubheader, Drawer, List, ListItemButton, ListItem, ListItemIcon, ListItemText, Card, } from '@mui/material';
 import MainGoalDialog from './MainGoalDialog';
 import EditMainGoalDialog from './EditMainGoalDialog';
 import DeleteMainGoal from './DeleteMainGoal';
 import { useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Popover from '@mui/material/Popover';
-import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import "../App.css"
 
 export default function MenuDrawer({ mainGoals, handleSelectedGoal, updateMainGoals }) {
 
-
     const [anchorEl, setAnchorEl] = useState(null);
-    const openEmoji = Boolean(anchorEl);
-    const handleAnchorClose = () => {
-        setAnchorEl(null);
-    };
-    const handleClick = (event) => {
+    const [activeMainGoal, setActiveMainGoal] = useState(null);
+
+    const handleClick = (event, mainGoal) => {
         setAnchorEl(event.currentTarget);
+        setActiveMainGoal(mainGoal);
     };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+        setActiveMainGoal(null);
+    };
+
+    const openMenu = Boolean(anchorEl);
+
     return (
         <div>
             <Drawer
@@ -38,6 +44,7 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, updateMainGo
                     {mainGoals.map((mainGoal) => (
                         <ListItem
                             disablePadding
+                            className="subgoal-card"
                             key={mainGoal._id}
                             sx={{
                                 '&:hover .edit-icon': {
@@ -53,26 +60,25 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, updateMainGo
                                 <MoreVertIcon
                                     onClick={(e) => {
                                         e.preventDefault();   // ← これが重要
-                                        handleClick(e);
+                                        handleClick(e, mainGoal);
                                     }}
                                     className="actions" />
-                                <Popover
-                                    open={openEmoji}
+                                <Menu
                                     anchorEl={anchorEl}
-                                    onClose={handleAnchorClose}
-                                    disablePortal
-                                    anchorOrigin={{
-                                        vertical: 'bottom',
-                                        horizontal: 'left',
-                                    }}
-                                    transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'left',
+                                    open={openMenu}
+                                    onClose={handleMenuClose}
+                                    PaperProps={{
+                                        elevation: 4,
+                                        sx: {
+                                            borderRadius: 2,
+                                            mt: 1,
+                                            minWidth: 180
+                                        }
                                     }}
                                 >
-                                    <EditMainGoalDialog mainGoal={mainGoal} updateMainGoals={updateMainGoals} />
-                                    <DeleteMainGoal mainGoal={mainGoal} updateMainGoals={updateMainGoals} />
-                                </Popover>
+                                    <EditMainGoalDialog mainGoal={activeMainGoal} updateMainGoals={updateMainGoals} handleMenuClose={handleMenuClose} />
+                                    <DeleteMainGoal mainGoal={activeMainGoal} updateMainGoals={updateMainGoals} handleMenuClose={handleMenuClose} />
+                                </Menu>
                             </ListItemButton>
                         </ListItem>
                     ))}

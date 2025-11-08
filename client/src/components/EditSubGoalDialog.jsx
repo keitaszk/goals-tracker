@@ -11,12 +11,13 @@ import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import EditIcon from '@mui/icons-material/Edit';
+import { MenuItem, ListItemIcon, ListItemText } from '@mui/material';
 
-export default function EditSubGoalDialog({ selectedMainGoal, subGoal, updateMainGoals }) {
+export default function EditSubGoalDialog({ selectedMainGoal, subGoal, updateMainGoals, handleMenuClose }) {
     const mainGoalId = selectedMainGoal._id
     const [open, setOpen] = useState(false);
-    const [dueDate, setDueDate] = useState(dayjs(subGoal.dueDate));
-    const [title, setTitle] = useState(subGoal.title);
+    const [dueDate, setDueDate] = useState(subGoal ? dayjs(subGoal.dueDate): null);
+    const [title, setTitle] = useState(subGoal ? subGoal.title: null);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -24,6 +25,7 @@ export default function EditSubGoalDialog({ selectedMainGoal, subGoal, updateMai
 
     const handleClose = () => {
         setOpen(false);
+        handleMenuClose();
     };
 
     const handleSubmit = async (e) => {
@@ -52,9 +54,14 @@ export default function EditSubGoalDialog({ selectedMainGoal, subGoal, updateMai
     }
 
     return (
-        
+
         <Fragment>
-            <EditIcon onClick={handleClickOpen} />
+            <MenuItem onClick={handleClickOpen}>
+                <ListItemIcon>
+                    <EditIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Edit Subgoal" />
+            </MenuItem>
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -81,41 +88,41 @@ export default function EditSubGoalDialog({ selectedMainGoal, subGoal, updateMai
                             />
                         </div>
                     </DialogContent>
-                    <div style={{ display: "flex", justifyContent: "flex-end", marginRight: "20px" }}>
-                        <Button
-                            variant="text"
-                            onClick={handleClose}
-                            sx={{
-                                color: "#555", // 通常時の文字色
-                                textTransform: "none",
-                                fontWeight: 500,
-                                marginRight: "5px",
+                    <DialogActions>
+                        <div style={{ display: "flex", justifyContent: "flex-end", marginRight: "20px" }}>
+                            <Button
+                                variant="text"
+                                onClick={handleClose}
+                                sx={{
+                                    color: "#555", // 通常時の文字色
+                                    textTransform: "none",
+                                    fontWeight: 500,
+                                    marginRight: "5px",
+                                    "&:hover": {
+                                        backgroundColor: "rgba(0,0,0,0.04)", // ← 薄いグレー背景
+                                    },
+                                    "&:active": {
+                                        backgroundColor: "rgba(0,0,0,0.08)", // ← クリック時に少し濃く
+                                        outline: "none"
+                                    },
+                                }}
+                            >
+                                Cancel
+                            </Button>
+                            <Button type='submit' variant="contained" sx={{
+                                backgroundColor: "#a855f7", // ← 紫（Tailwindのpurple-500）
+                                color: "white",
+                                textTransform: "none", // ← テキストをそのまま表示
+                                fontWeight: 600,
                                 "&:hover": {
-                                    backgroundColor: "rgba(0,0,0,0.04)", // ← 薄いグレー背景
+                                    backgroundColor: "#9333ea", // ← 少し濃い紫
                                 },
                                 "&:active": {
-                                    backgroundColor: "rgba(0,0,0,0.08)", // ← クリック時に少し濃く
                                     outline: "none"
                                 },
-                            }}
-                        >
-                            Cancel
-                        </Button>
-                        <Button type='submit' variant="contained" sx={{
-                            backgroundColor: "#a855f7", // ← 紫（Tailwindのpurple-500）
-                            color: "white",
-                            textTransform: "none", // ← テキストをそのまま表示
-                            fontWeight: 600,
-                            "&:hover": {
-                                backgroundColor: "#9333ea", // ← 少し濃い紫
-                            },
-                            "&:active": {
-                                outline: "none"
-                            },
-                            "&:focus": { outline: "none" },
-                        }}>Save</Button>
-                    </div>
-                    <DialogActions>
+                                "&:focus": { outline: "none" },
+                            }}>Save</Button>
+                        </div>
                     </DialogActions>
                 </form>
             </Dialog>

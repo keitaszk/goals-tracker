@@ -1,8 +1,10 @@
 import DeleteIcon from '@mui/icons-material/Delete'; import { useState } from 'react';
 import { Button } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
+import { MenuItem, ListItemIcon, ListItemText, Stack, DialogTitle, DialogActions } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
-export default function DeleteSubGoal({ subGoal, selectedMainGoal, updateMainGoals }) {
+export default function DeleteSubGoal({ subGoal, selectedMainGoal, updateMainGoals, handleMenuClose }) {
     const mainGoalId = selectedMainGoal._id
     const [open, setOpen] = useState(false);
 
@@ -12,6 +14,7 @@ export default function DeleteSubGoal({ subGoal, selectedMainGoal, updateMainGoa
 
     const handleClose = () => {
         setOpen(false);
+        handleMenuClose();
     };
 
     const handleDelete = async (e) => {
@@ -33,17 +36,64 @@ export default function DeleteSubGoal({ subGoal, selectedMainGoal, updateMainGoa
     }
     return (
         <>
-            <DeleteIcon onClick={handleClickOpen} />
+            <MenuItem onClick={handleClickOpen}>
+                <ListItemIcon>
+                    <DeleteIcon fontSize='small' />
+                </ListItemIcon>
+                <ListItemText primary="Delete Subgoal" />
+            </MenuItem>
             <Dialog
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <h2>消去しますか？</h2>
+                <Stack direction="row" justifyContent="space-between" alignItems="center">
+                    <DialogTitle id="alert-dialog-title" sx={{ fontWeight: "bold" }}>
+                        {"Delete subgoal?"}
+                    </DialogTitle>
+                    <CloseIcon sx={{ mr: 2 }} onClick={handleClose} />
+                </Stack>
                 <form action="" onSubmit={handleDelete}>
-                    <Button type='submit'>Delete</Button>
-                    <Button onClick={handleClose}>Cancel</Button>
+                    <DialogActions>
+                        <div style={{ display: "flex", justifyContent: "flex-end", marginRight: "20px" }}>
+                            <Button
+                                variant="text"
+                                onClick={handleClose}
+                                sx={{
+                                    color: "#555", // 通常時の文字色
+                                    textTransform: "none",
+                                    fontWeight: 500,
+                                    marginRight: "5px",
+                                    "&:hover": {
+                                        backgroundColor: "rgba(0,0,0,0.04)", // ← 薄いグレー背景
+                                    },
+                                    "&:active": {
+                                        backgroundColor: "rgba(0,0,0,0.08)", // ← クリック時に少し濃く
+                                        outline: "none"
+                                    },
+                                }}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                type='submit'
+                                variant="contained"
+                                sx={{
+                                    backgroundColor: "#a855f7", // ← 紫（Tailwindのpurple-500）
+                                    color: "white",
+                                    textTransform: "none", // ← テキストをそのまま表示
+                                    fontWeight: 600,
+                                    "&:hover": {
+                                        backgroundColor: "#9333ea", // ← 少し濃い紫
+                                    },
+                                    "&:active": {
+                                        outline: "none"
+                                    },
+                                    "&:focus": { outline: "none" },
+                                }}>Delete</Button>
+                        </div>
+                    </DialogActions>
                 </form>
             </Dialog>
         </>
