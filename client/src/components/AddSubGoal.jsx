@@ -12,16 +12,23 @@ function AddSubGoal({ selectedMainGoal, updateMainGoals }) {
             }}
         >
             <Card>
-                <CardActionArea>
+                {/* <CardActionArea sx={{
+                    "&:focus": {
+                        outline: "none"
+                    },
+                    "&:active": {
+                        outline: "none"
+                    },
+                }}>
                     <CardContent
                         sx={{
                             display: "flex",
                             justifyContent: "center", // centers horizontally
                             alignItems: "center",     // centers vertically
-                        }}>
-                        <SubGoalDialog selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals}/>
-                    </CardContent>
-                </CardActionArea>
+                        }}> */}
+                        <SubGoalDialog selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals} />
+                    {/* </CardContent>
+                </CardActionArea> */}
             </Card>
         </Box>
     );

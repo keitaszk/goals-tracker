@@ -34,11 +34,27 @@ export default function GoalStepper({ goal }) {
           const daysLeft = dayjs(subGoal.dueDate).diff(dayjs(), "day")
           return (
             <Step key={idx}>
-              <StepLabel>{daysLeft} days left</StepLabel>
+              <StepLabel sx={{
+                "& .MuiStepLabel-label": {
+                  fontSize: "0.9rem",
+                  color: dayjs(subGoal.dueDate).isAfter(dayjs(), "day")
+                    ? "#666"
+                    : subGoal.completed
+                      ? "#666"
+                      : "#FF0000",
+
+                  marginTop: "10px",
+                  textDecoration: subGoal.completed ? "line-through" : "",
+                },
+              }}>
+                {dayjs(subGoal.dueDate).year() === dayjs().year()
+                  ? dayjs(subGoal.dueDate).format("MM/DD")
+                  : dayjs(subGoal.dueDate).format("YYYY/MM/DD")}
+              </StepLabel>
             </Step>
           )
         })}
       </Stepper>
-    </Box>
+    </Box >
   );
 }
