@@ -9,14 +9,13 @@ export default function MainGoal({ selectedMainGoal, updateMainGoals }) {
             <Box sx={{ flex: 1, p: 6, mx: "auto" }}>
                 <h1>{selectedMainGoal.emoji} {selectedMainGoal.title}</h1>
                 <GoalStepper goal={selectedMainGoal} />
-                <p>{selectedMainGoal.dueDate} left</p>
-                {/* calcuation will be added */}
                 <Box
                     sx={{
                         width: '100%',
                         display: 'grid',
                         gap: 2,
-                        textAlign: "left"
+                        textAlign: "left",
+                        marginTop: "30px"
                     }}
                 >
                     <SubGoalCard selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals}/>

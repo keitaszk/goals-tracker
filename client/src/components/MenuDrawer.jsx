@@ -72,7 +72,8 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, updateMainGo
                                         sx: {
                                             borderRadius: 2,
                                             mt: 1,
-                                            minWidth: 180
+                                            minWidth: 180,
+                                            boxShadow: "0px 2px 4px rgba(0,0,0,0.1)"
                                         }
                                     }}
                                 >

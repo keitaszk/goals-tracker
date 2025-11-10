@@ -52,16 +52,19 @@ app.post("/api/mainGoals/:id", async (req, res) => {
         const mainGoalId = req.params.id;
         const subGoalData = req.body;
 
-        const updateMainGoal = await MainGoal.findByIdAndUpdate(
-            mainGoalId,
-            { $push: { subGoals: subGoalData } },
-            { new: true }
-        );
+        const mainGoal = await MainGoal.findById(mainGoalId);
+        if (!mainGoal) return res.status(404).json({ message: "MainGoal not found" });
 
-        if (!updateMainGoal) {
-            return res.status(404).json({ message: "MainGoal not found" });
-        }
-        res.json(updateMainGoal);
+        mainGoal.subGoals.push(subGoalData);
+
+        mainGoal.subGoals.sort((a, b) => {
+            if (!a.dueDate) return 1;
+            if (!b.dueDate) return -1;
+            return new Date(a.dueDate) - new Date(b.dueDate);
+        })
+
+        await mainGoal.save();
+        res.json(mainGoal);
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: "Server error" })
@@ -122,6 +125,13 @@ app.patch("/api/mainGoals/:mainGoalId/:subGoalId", async (req, res) => {
         subGoal.title = title;
         subGoal.dueDate = dueDate;
         subGoal.completed = completed;
+
+        mainGoal.subGoals.sort((a, b) => {
+            if (!a.dueDate) return 1;
+            if (!b.dueDate) return -1;
+            return new Date(a.dueDate) - new Date(b.dueDate);
+        })
+
         await mainGoal.save();
         res.json(subGoal);
     } catch (err) {

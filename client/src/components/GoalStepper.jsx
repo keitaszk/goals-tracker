@@ -1,4 +1,5 @@
 import { Box, Stepper, Step, StepLabel } from '@mui/material'
+import dayjs from 'dayjs';
 
 export default function GoalStepper({ goal }) {
 
@@ -15,8 +16,8 @@ export default function GoalStepper({ goal }) {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Stepper 
-      activeStep={completedCount}
+      <Stepper
+        activeStep={completedCount}
         alternativeLabel
         sx={{
           "& .MuiStepIcon-root": {
@@ -29,11 +30,14 @@ export default function GoalStepper({ goal }) {
             color: "#9333ea", // ← 完了したステップ
           },
         }}>
-        {subGoals.map((subGoal, idx) => (
-          <Step key={idx}>
-            <StepLabel>{subGoal.dueDate}</StepLabel>
-          </Step>
-        ))}
+        {subGoals.map((subGoal, idx) => {
+          const daysLeft = dayjs(subGoal.dueDate).diff(dayjs(), "day")
+          return (
+            <Step key={idx}>
+              <StepLabel>{daysLeft} days left</StepLabel>
+            </Step>
+          )
+        })}
       </Stepper>
     </Box>
   );

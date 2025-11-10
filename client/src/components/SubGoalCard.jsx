@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
 import Menu from '@mui/material/Menu';
+import dayjs from 'dayjs';
 
 function SubGoalCard({ selectedMainGoal, updateMainGoals }) {
     const subGoals = selectedMainGoal.subGoals
@@ -81,7 +82,8 @@ function SubGoalCard({ selectedMainGoal, updateMainGoals }) {
                                             sx: {
                                                 borderRadius: 2,
                                                 mt: 1,
-                                                minWidth: 180
+                                                minWidth: 180,
+                                                boxShadow: "0px 2px 4px rgba(0,0,0,0.1)"
                                             }
                                         }}
                                     >
@@ -91,7 +93,7 @@ function SubGoalCard({ selectedMainGoal, updateMainGoals }) {
                                 </Box>
                             </Stack>
                             <Typography variant="body2" color="text.secondary">
-                                {subGoal.dueDate}
+                                Due: {dayjs(subGoal.dueDate).format("YYYY-MM-DD")}
                             </Typography>
                         </CardContent>
                     </CardActionArea>
