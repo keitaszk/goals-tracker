@@ -1,15 +1,14 @@
 import { Button, Stack, Card, CardContent, Typography, CardActionArea } from '@mui/material';
-import EditSubGoalDialog from './EditSubGoalDialog';
-import DeleteSubGoal from './DeleteSubGoal';
+import EditSubgoal from './EditSubgoal';
+import DeleteSubgoal from './DeleteSubgoal';
 import "../App.css"
 import Box from '@mui/material/Box';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
 import Menu from '@mui/material/Menu';
 import dayjs from 'dayjs';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
-function SubGoalCard({ selectedMainGoal, updateMainGoals }) {
+export default function SubgoalCard({ selectedMainGoal, updateMainGoals }) {
     const subGoals = selectedMainGoal.subGoals
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -106,8 +105,8 @@ function SubGoalCard({ selectedMainGoal, updateMainGoals }) {
                                                 }
                                             }}
                                         >
-                                            <EditSubGoalDialog subGoal={activeSubgoal} selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals} handleMenuClose={handleMenuClose} />
-                                            <DeleteSubGoal subGoal={activeSubgoal} selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals} handleMenuClose={handleMenuClose} />
+                                            <EditSubgoal subGoal={activeSubgoal} selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals} handleMenuClose={handleMenuClose} />
+                                            <DeleteSubgoal subGoal={activeSubgoal} selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals} handleMenuClose={handleMenuClose} />
                                         </Menu>
                                     </Box>
                                 </Stack>
@@ -135,5 +134,3 @@ function SubGoalCard({ selectedMainGoal, updateMainGoals }) {
         </>
     );
 }
-
-export default SubGoalCard;

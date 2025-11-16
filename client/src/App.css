@@ -41,12 +41,4 @@
   color: #888;
 }
 
-.subgoal-card .actions {
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.subgoal-card:hover .actions {
-  opacity: 1;
-}
 

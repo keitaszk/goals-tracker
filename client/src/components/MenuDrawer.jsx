@@ -1,11 +1,21 @@
-import { ListSubheader, Drawer, List, ListItemButton, ListItem, ListItemIcon, ListItemText, Card, } from '@mui/material';
-import MainGoalDialog from './MainGoalDialog';
-import EditMainGoalDialog from './EditMainGoalDialog';
-import DeleteMainGoal from './DeleteMainGoal';
+// cleaned
+
 import { useState } from 'react';
+import {
+    ListSubheader,
+    Drawer,
+    List,
+    ListItemButton,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+} from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Menu from '@mui/material/Menu';
-import "../App.css"
+import AddMainGoal from './AddMainGoal';
+import EditMainGoal from './EditMainGoal';
+import DeleteMainGoal from './DeleteMainGoal';
+import { ActionsMenu } from './ui/ActionsMenu';
+import "./MenuDrawer.css"
 
 export default function MenuDrawer({ mainGoals, handleSelectedGoal, updateMainGoals }) {
 
@@ -14,6 +24,7 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, updateMainGo
 
     const handleClick = (event, mainGoal) => {
         setAnchorEl(event.currentTarget);
+        // pass the mapped mainGoal to the Menu
         setActiveMainGoal(mainGoal);
     };
 
@@ -28,16 +39,17 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, updateMainGo
         <div>
             <Drawer
                 variant='permanent'
-                sx={{
-                    width: "250px", '& .MuiDrawer-paper': {
-                        width: "250px",
-                        boxSizing: 'border-box',
-                        backgroundColor: "#f3e8ff",
-                    },
-                }}>
+                className='menu-drawer'
+            >
                 <List
                     subheader={
-                        <ListSubheader component="div" sx={{ textAlign: "left", backgroundColor: "#f3e8ff" }}>
+                        <ListSubheader
+                            component="div"
+                            sx={{
+                                textAlign: "left",
+                                backgroundColor: "#f3e8ff"
+                            }}
+                        >
                             Main Goals
                         </ListSubheader>
                     }>
@@ -46,44 +58,46 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, updateMainGo
                             disablePadding
                             className="subgoal-card"
                             key={mainGoal._id}
-                            sx={{
-                                '&:hover .edit-icon': {
-                                    opacity: 1,
-                                    transform: 'translateX(0)',
-                                },
-                            }}>
+                        >
                             <ListItemButton onClick={() => handleSelectedGoal(mainGoal._id)}>
-                                <ListItemIcon sx={{ color: 'text.primary', fontSize: "24px" }}>
+                                <ListItemIcon
+                                    sx={{
+                                        color: 'text.primary',
+                                        fontSize: "24px"
+                                    }}
+                                >
                                     {mainGoal.emoji}
                                 </ListItemIcon>
                                 <ListItemText primary={mainGoal.title} />
                                 <MoreVertIcon
                                     onClick={(e) => {
-                                        e.preventDefault();   // ← これが重要
+                                        // e.preventDefault();
                                         handleClick(e, mainGoal);
                                     }}
                                     className="actions" />
-                                <Menu
+                                {/* Menu renders only once (not one menu per mainGoal) */}
+                                <ActionsMenu
                                     anchorEl={anchorEl}
                                     open={openMenu}
-                                    onClose={handleMenuClose}
-                                    PaperProps={{
-                                        elevation: 4,
-                                        sx: {
-                                            borderRadius: 2,
-                                            mt: 1,
-                                            minWidth: 180,
-                                            boxShadow: "0px 2px 4px rgba(0,0,0,0.1)"
-                                        }
-                                    }}
-                                >
-                                    <EditMainGoalDialog mainGoal={activeMainGoal} updateMainGoals={updateMainGoals} handleMenuClose={handleMenuClose} />
-                                    <DeleteMainGoal mainGoal={activeMainGoal} updateMainGoals={updateMainGoals} handleMenuClose={handleMenuClose} />
-                                </Menu>
+                                    onClose={(e) => {
+                                        e.stopPropagation();
+                                        handleMenuClose();
+                                    }}>
+                                    <EditMainGoal
+                                        mainGoal={activeMainGoal}
+                                        updateMainGoals={updateMainGoals}
+                                        handleMenuClose={handleMenuClose}
+                                    />
+                                    <DeleteMainGoal
+                                        mainGoal={activeMainGoal}
+                                        updateMainGoals={updateMainGoals}
+                                        handleMenuClose={handleMenuClose}
+                                    />
+                                </ActionsMenu>
                             </ListItemButton>
                         </ListItem>
                     ))}
-                    <MainGoalDialog updateMainGoals={updateMainGoals} />
+                    <AddMainGoal updateMainGoals={updateMainGoals} />
                 </List>
             </Drawer>
         </div>

@@ -1,0 +1,17 @@
+.subgoal-card .actions {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.subgoal-card:hover .actions {
+    opacity: 1;
+}
+
+.menu-drawer {
+    width: 250px;
+}
+
+.menu-drawer .MuiDrawer-paper {
+    width: 250px;
+    background-color: #f3e8ff;
+}

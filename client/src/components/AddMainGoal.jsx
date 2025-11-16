@@ -14,7 +14,7 @@ import 'emoji-picker-element';
 import { useRef } from 'react';
 import Popover from '@mui/material/Popover';
 
-export default function MainGoalDialog({ updateMainGoals }) {
+export default function AddMainGoal({ updateMainGoals }) {
     const [open, setOpen] = useState(false);
     const [dueDate, setDueDate] = useState(dayjs());
     const [title, setTitle] = useState("");
@@ -94,6 +94,13 @@ export default function MainGoalDialog({ updateMainGoals }) {
                     color: "#a855f7",
                     backgroundColor: "transparent",
                     fontWeight: 600,
+                    "&:hover": {
+                        backgroundColor: "rgba(168, 85, 247, 0.08)", 
+                    },
+                    "&:active": {
+                        outline: "none"
+                    },
+                    "&:focus": { outline: "none" },
                 }}
             >+ Add maingoal</Button>
             <Dialog

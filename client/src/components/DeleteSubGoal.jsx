@@ -4,7 +4,7 @@ import Dialog from '@mui/material/Dialog';
 import { MenuItem, ListItemIcon, ListItemText, Stack, DialogTitle, DialogActions } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
-export default function DeleteSubGoal({ subGoal, selectedMainGoal, updateMainGoals, handleMenuClose }) {
+export default function DeleteSubgoal({ subGoal, selectedMainGoal, updateMainGoals, handleMenuClose }) {
     const mainGoalId = selectedMainGoal._id
     const [open, setOpen] = useState(false);
 
@@ -27,11 +27,11 @@ export default function DeleteSubGoal({ subGoal, selectedMainGoal, updateMainGoa
 
         if (res.ok) {
             const data = await res.json();
-            console.log("subGoal消去成功", data)
+            console.log("subgoal消去成功", data)
             handleClose();
             updateMainGoals();
         } else {
-            console.log("subGoal消去失敗")
+            console.log("subgoal消去失敗")
         }
     }
     return (

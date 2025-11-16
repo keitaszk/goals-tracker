@@ -1,23 +1,29 @@
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import { Fragment } from 'react';
-import { useState, useEffect } from 'react';
-import CloseIcon from '@mui/icons-material/Close';
-import { Stack } from '@mui/material';
-import TextField from '@mui/material/TextField';
+// cleaned
+
+import { Fragment, useRef, useState, useEffect } from 'react';
+import {
+    Stack,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    TextField,
+    Popover,
+    MenuItem,
+    ListItemIcon,
+    ListItemText
+} from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import EditIcon from '@mui/icons-material/Edit';
-import { useRef } from 'react';
-import Popover from '@mui/material/Popover';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import { StyledCloseIcon } from './ui/StyledCloseIcon';
+import { EmojiSelectorButton } from './ui/EmojiSelectorButton';
+import { PrimaryButton } from './ui/PrimaryButton';
+import { TextButton } from './ui/TextButton';
+import "./Dialog.css"
 
-export default function EditMainGoalDialog({ mainGoal, updateMainGoals, handleMenuClose }) {
+export default function EditMainGoal({ mainGoal, updateMainGoals, handleMenuClose }) {
+
     const [open, setOpen] = useState(false);
     const [dueDate, setDueDate] = useState(mainGoal ? dayjs(mainGoal.dueDate) : null);
     const [title, setTitle] = useState(mainGoal ? mainGoal.title : null);
@@ -45,17 +51,13 @@ export default function EditMainGoalDialog({ mainGoal, updateMainGoals, handleMe
 
     const openEmoji = Boolean(anchorEl);
 
-
     const handleEdit = async (e) => {
         e.preventDefault();
-
         const editedMainGoal = {
             title,
             dueDate: new Date(dueDate),
             emoji,
         };
-
-        console.log("送信内容:", editedMainGoal);
         const res = await fetch(`http://localhost:3000/api/mainGoals/${mainGoal._id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -64,21 +66,21 @@ export default function EditMainGoalDialog({ mainGoal, updateMainGoals, handleMe
 
         if (res.ok) {
             const data = await res.json();
-            console.log("編集成功", data)
             handleClose();
             updateMainGoals();
         } else {
-            console.log("編集失敗")
+            console.error("Error editing main goal")
         }
     }
 
+    // Listen for the emoji picker's custom "emoji-click" event
     useEffect(() => {
         const picker = pickerRef.current;
         if (!picker) return;
 
         const handleEmojiClick = (event) => {
             const selectedEmoji = event.detail.unicode;
-            setEmoji(selectedEmoji); // 絵文字を保存
+            setEmoji(selectedEmoji);
             setAnchorEl(null);
         };
 
@@ -87,11 +89,16 @@ export default function EditMainGoalDialog({ mainGoal, updateMainGoals, handleMe
         return () => {
             picker.removeEventListener("emoji-click", handleEmojiClick);
         };
-    }, [openEmoji]); // ピッカーが開いたときにリスナーを登録
+    }, [openEmoji]);
 
     return (
         <>
-            <MenuItem onClick={handleClickOpen}>
+            <MenuItem
+                onClick={(e) => {
+                    e.stopPropagation();
+                    handleClickOpen();
+                }}
+            >
                 <ListItemIcon>
                     <EditIcon fontSize="small" />
                 </ListItemIcon>
@@ -108,39 +115,41 @@ export default function EditMainGoalDialog({ mainGoal, updateMainGoals, handleMe
                         <DialogTitle id="alert-dialog-title" sx={{ fontWeight: "bold" }}>
                             {"Edit Main Goal"}
                         </DialogTitle>
-                        <CloseIcon sx={{ mr: 2 }} onClick={handleClose} />
+                        <StyledCloseIcon
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleClose();
+                            }}
+                        >
+                        </StyledCloseIcon>
                     </Stack>
                     <form action="" onSubmit={handleEdit}>
                         <DialogContent>
-                            <div style={{ display: "grid", alignItems: "center", gap: "12px", gridTemplateColumns: "100px 1fr" }}>
+                            <div className="text-box" >
                                 <h3>Title:</h3>
-                                <TextField id="outlined-basic" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} />
+                                <TextField
+                                    id="outlined-basic"
+                                    variant="outlined"
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                />
                             </div>
-                            <div style={{ display: "grid", alignItems: "center", gap: "12px", gridTemplateColumns: "100px 1fr" }}>
+                            <div className="text-box">
                                 <h3>Due date:</h3>
                                 <DatePicker
                                     value={dueDate}
                                     onChange={(newDate) => setDueDate(newDate)}
                                 />
                             </div>
-                            <div style={{ display: "flex", alignItems: "center", gap: "12px", }}>
+                            <div className='icon-selector'>
                                 <h3>Icon:</h3>
-                                <span style={{ fontSize: "24px", marginLeft: "8px" }}>{emoji}</span>
-                                <Button
+                                <span className='emoji'>{emoji}</span>
+                                <EmojiSelectorButton
                                     onClick={handleClick}
                                     variant="contained"
-                                    sx={{
-                                        backgroundColor: "#eeeeeeff",
-                                        color: "#000",
-                                        textTransform: "none",      // ← ボタン内の文字をそのまま表示
-                                        "&:hover": {
-                                            backgroundColor: "#dcdcdcff", // ← 少し濃くしてホバー効果
-                                        },
-                                        "&:active": {
-                                            outline: "none"
-                                        },
-                                        "&:focus": { outline: "none" },
-                                    }}>Select Icon</Button>
+                                >
+                                    Select Icon
+                                </EmojiSelectorButton>
                                 <Popover
                                     open={openEmoji}
                                     anchorEl={anchorEl}
@@ -160,39 +169,23 @@ export default function EditMainGoalDialog({ mainGoal, updateMainGoals, handleMe
                                 </Popover>
                             </div>
                         </DialogContent>
-                        <div style={{ display: "flex", justifyContent: "flex-end", marginRight: "20px" }}>
-                            <Button
+                        <div className='buttons'>
+                            <TextButton
                                 variant="text"
-                                onClick={handleClose}
-                                sx={{
-                                    color: "#555", // 通常時の文字色
-                                    textTransform: "none",
-                                    fontWeight: 500,
-                                    marginRight: "5px",
-                                    "&:hover": {
-                                        backgroundColor: "rgba(0,0,0,0.04)", // ← 薄いグレー背景
-                                    },
-                                    "&:active": {
-                                        backgroundColor: "rgba(0,0,0,0.08)", // ← クリック時に少し濃く
-                                        outline: "none"
-                                    },
-                                }}
-                            >
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleClose()
+                                }}>
                                 Cancel
-                            </Button>
-                            <Button type='submit' variant="contained" sx={{
-                                backgroundColor: "#a855f7", // ← 紫（Tailwindのpurple-500）
-                                color: "white",
-                                textTransform: "none", // ← テキストをそのまま表示
-                                fontWeight: 600,
-                                "&:hover": {
-                                    backgroundColor: "#9333ea", // ← 少し濃い紫
-                                },
-                                "&:active": {
-                                    outline: "none"
-                                },
-                                "&:focus": { outline: "none" },
-                            }}>Save</Button>
+                            </TextButton>
+                            <PrimaryButton
+                                type='submit'
+                                variant="contained"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                }}>
+                                Save
+                            </PrimaryButton>
                         </div>
                         <DialogActions>
                         </DialogActions>
@@ -200,6 +193,5 @@ export default function EditMainGoalDialog({ mainGoal, updateMainGoals, handleMe
                 </Dialog>
             </Fragment>
         </>
-
     );
 }

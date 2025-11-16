@@ -1,6 +1,6 @@
-import AddSubGoal from "./AddSubGoal"
+import AddSubgoal from "./AddSubgoal"
 import GoalStepper from "./GoalStepper"
-import SubGoalCard from "./SubGoalCard"
+import SubgoalCard from "./SubgoalCard"
 import { Box } from "@mui/material"
 
 export default function MainGoal({ selectedMainGoal, updateMainGoals }) {
@@ -18,8 +18,8 @@ export default function MainGoal({ selectedMainGoal, updateMainGoals }) {
                         marginTop: "30px"
                     }}
                 >
-                    <SubGoalCard selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals}/>
-                    <AddSubGoal selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals} />
+                    <SubgoalCard selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals}/>
+                    <AddSubgoal selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals} />
                 </Box>
             </Box>
         </>

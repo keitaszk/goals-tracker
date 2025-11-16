@@ -13,7 +13,7 @@ import dayjs from 'dayjs';
 import EditIcon from '@mui/icons-material/Edit';
 import { MenuItem, ListItemIcon, ListItemText } from '@mui/material';
 
-export default function EditSubGoalDialog({ selectedMainGoal, subGoal, updateMainGoals, handleMenuClose }) {
+export default function EditSubgoal({ selectedMainGoal, subGoal, updateMainGoals, handleMenuClose }) {
     const mainGoalId = selectedMainGoal._id
     const [open, setOpen] = useState(false);
     const [dueDate, setDueDate] = useState(subGoal ? dayjs(subGoal.dueDate): null);
