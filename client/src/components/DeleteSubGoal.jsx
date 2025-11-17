@@ -1,11 +1,24 @@
-import DeleteIcon from '@mui/icons-material/Delete'; import { useState } from 'react';
-import { Button } from '@mui/material';
-import Dialog from '@mui/material/Dialog';
-import { MenuItem, ListItemIcon, ListItemText, Stack, DialogTitle, DialogActions } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+// cleaned
+
+import { useState } from 'react';
+import {
+    MenuItem,
+    ListItemIcon,
+    ListItemText,
+    Stack,
+    DialogTitle,
+    Dialog
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { StyledCloseIcon } from './ui/StyledCloseIcon';
+import "./Dialog.css"
+import { TextButton } from './ui/TextButton';
+import { PrimaryButton } from './ui/PrimaryButton';
 
 export default function DeleteSubgoal({ subGoal, selectedMainGoal, updateMainGoals, handleMenuClose }) {
+
     const mainGoalId = selectedMainGoal._id
+
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -26,12 +39,10 @@ export default function DeleteSubgoal({ subGoal, selectedMainGoal, updateMainGoa
         })
 
         if (res.ok) {
-            const data = await res.json();
-            console.log("subgoal消去成功", data)
             handleClose();
             updateMainGoals();
         } else {
-            console.log("subgoal消去失敗")
+            console.error("Error deleting subgoal", res.status)
         }
     }
     return (
@@ -50,50 +61,28 @@ export default function DeleteSubgoal({ subGoal, selectedMainGoal, updateMainGoa
             >
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                     <DialogTitle id="alert-dialog-title" sx={{ fontWeight: "bold" }}>
-                        {"Delete subgoal?"}
+                        {`Delete ${subGoal ? subGoal.title : ""}?`}
                     </DialogTitle>
-                    <CloseIcon sx={{ mr: 2 }} onClick={handleClose} />
+                    <StyledCloseIcon
+                        sx={{ mr: 2 }}
+                        onClick={handleClose}
+                    ></StyledCloseIcon>
                 </Stack>
                 <form action="" onSubmit={handleDelete}>
-                    <DialogActions>
-                        <div style={{ display: "flex", justifyContent: "flex-end", marginRight: "20px" }}>
-                            <Button
-                                variant="text"
-                                onClick={handleClose}
-                                sx={{
-                                    color: "#555", // 通常時の文字色
-                                    textTransform: "none",
-                                    fontWeight: 500,
-                                    marginRight: "5px",
-                                    "&:hover": {
-                                        backgroundColor: "rgba(0,0,0,0.04)", // ← 薄いグレー背景
-                                    },
-                                    "&:active": {
-                                        backgroundColor: "rgba(0,0,0,0.08)", // ← クリック時に少し濃く
-                                        outline: "none"
-                                    },
-                                }}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                type='submit'
-                                variant="contained"
-                                sx={{
-                                    backgroundColor: "#a855f7", // ← 紫（Tailwindのpurple-500）
-                                    color: "white",
-                                    textTransform: "none", // ← テキストをそのまま表示
-                                    fontWeight: 600,
-                                    "&:hover": {
-                                        backgroundColor: "#9333ea", // ← 少し濃い紫
-                                    },
-                                    "&:active": {
-                                        outline: "none"
-                                    },
-                                    "&:focus": { outline: "none" },
-                                }}>Delete</Button>
-                        </div>
-                    </DialogActions>
+                    <div className='buttons'>
+                        <TextButton
+                            variant="text"
+                            onClick={handleClose}
+                        >
+                            Cancel
+                        </TextButton>
+                        <PrimaryButton
+                            type='submit'
+                            variant="contained"
+                        >
+                            Delete
+                        </PrimaryButton>
+                    </div>
                 </form>
             </Dialog>
         </>

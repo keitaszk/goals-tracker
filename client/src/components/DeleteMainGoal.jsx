@@ -38,7 +38,6 @@ export default function DeleteMainGoal({ mainGoal, updateMainGoals, handleMenuCl
         })
 
         if (res.ok) {
-            const data = await res.json();
             handleClose();
             updateMainGoals();
         } else {

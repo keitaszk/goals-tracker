@@ -12,19 +12,6 @@ export default function App() {
   const [selectedMainGoal, setSelectedMainGoal] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
-  // const fetchMainGoal = async () => {
-  //   return fetch("http://localhost:3000/api/mainGoals")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setMainGoals(data)
-  //       if (data.length > 0 && !selectedMainGoal) {
-  //         setSelectedMainGoal(data[0])
-  //       }
-  //     })
-  //     .catch((err) => console.error("Error fetching main goals", err))
-  //     .finally(() => setIsLoading(false));
-  // };
-
   const loadMainGoals = async (shouldSelectDefault = false) => {
     try {
       const res = await fetch("http://localhost:3000/api/mainGoals");
@@ -46,20 +33,6 @@ export default function App() {
   useEffect(() => {
     loadMainGoals(true);
   }, []);
-
-  // const updateMainGoals = async () => {
-  //   try {
-  //     const res = await fetch("http://localhost:3000/api/mainGoals");
-  //     if (!res.ok) throw new Error("Failed to fetch main goals");
-
-  //     const data = await res.json();
-  //     setMainGoals(data);
-  //   } catch (err) {
-  //     console.error("Error updating main goals", err);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   const updateMainGoals = () => loadMainGoals(false);
 

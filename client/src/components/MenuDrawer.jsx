@@ -56,7 +56,7 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, updateMainGo
                     {mainGoals.map((mainGoal) => (
                         <ListItem
                             disablePadding
-                            className="subgoal-card"
+                            className="main-goal-list"
                             key={mainGoal._id}
                         >
                             <ListItemButton onClick={() => handleSelectedGoal(mainGoal._id)}>
@@ -71,7 +71,6 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, updateMainGo
                                 <ListItemText primary={mainGoal.title} />
                                 <MoreVertIcon
                                     onClick={(e) => {
-                                        // e.preventDefault();
                                         handleClick(e, mainGoal);
                                     }}
                                     className="actions" />

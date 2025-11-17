@@ -1,11 +1,18 @@
-import { Box, Stepper, Step, StepLabel } from '@mui/material'
+// cleaned
+
+import {
+  Step,
+  StepLabel
+} from '@mui/material'
 import dayjs from 'dayjs';
+import { StyledStepper } from './ui/StyledStepper';
 
-export default function GoalStepper({ goal }) {
+export default function GoalStepper({ selectedMainGoal }) {
 
-  const subGoals = goal.subGoals
+  const subGoals = selectedMainGoal.subGoals
   let completedCount = 0
 
+  // Count consecutive completed subgoals from the start.
   for (let subGoal of subGoals) {
     if (subGoal.completed) {
       completedCount++;
@@ -15,38 +22,25 @@ export default function GoalStepper({ goal }) {
   }
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Stepper
+      <StyledStepper
         activeStep={completedCount}
-        alternativeLabel
-        sx={{
-          "& .MuiStepIcon-root": {
-            color: "#d8b4fe", // ← デフォルト色（未完了）
-          },
-          "& .MuiStepIcon-root.Mui-active": {
-            color: "#a855f7", // ← 現在のステップ（アクティブ）
-          },
-          "& .MuiStepIcon-root.Mui-completed": {
-            color: "#9333ea", // ← 完了したステップ
-          },
-        }}>
+        alternativeLabel>
         {subGoals.map((subGoal, idx) => {
-          const daysLeft = dayjs(subGoal.dueDate).diff(dayjs(), "day")
           return (
             <Step key={idx}>
-              <StepLabel sx={{
-                "& .MuiStepLabel-label": {
-                  fontSize: "0.9rem",
-                  color: dayjs(subGoal.dueDate).isAfter(dayjs(), "day")
-                    ? "#666"
-                    : subGoal.completed
+              <StepLabel
+                sx={{
+                  "& .MuiStepLabel-label": {
+                    fontSize: "0.9rem",
+                    marginTop: "10px",
+                    textDecoration: subGoal.completed ? "line-through" : "",
+                    color: dayjs(subGoal.dueDate).isAfter(dayjs(), "day")
                       ? "#666"
-                      : "#FF0000",
-
-                  marginTop: "10px",
-                  textDecoration: subGoal.completed ? "line-through" : "",
-                },
-              }}>
+                      : subGoal.completed
+                        ? "#666"
+                        : "#FF0000",
+                  },
+                }}>
                 {dayjs(subGoal.dueDate).year() === dayjs().year()
                   ? dayjs(subGoal.dueDate).format("MM/DD")
                   : dayjs(subGoal.dueDate).format("YYYY/MM/DD")}
@@ -54,7 +48,6 @@ export default function GoalStepper({ goal }) {
             </Step>
           )
         })}
-      </Stepper>
-    </Box >
+      </StyledStepper>
   );
 }

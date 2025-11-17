@@ -1,0 +1,14 @@
+.no-outline:focus .no-outline:active {
+    outline: none;
+}
+
+.center-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.primary-content.MuiTypography-root {
+    color: #a855f7;
+    font-weight: 600;
+}

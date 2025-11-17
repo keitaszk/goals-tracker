@@ -1,17 +1,16 @@
 // cleaned
 
-import { Fragment, useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import {
     Stack,
     Dialog,
-    DialogActions,
     DialogContent,
     DialogTitle,
     TextField,
     Popover,
     MenuItem,
     ListItemIcon,
-    ListItemText
+    ListItemText,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
@@ -104,7 +103,6 @@ export default function EditMainGoal({ mainGoal, updateMainGoals, handleMenuClos
                 </ListItemIcon>
                 <ListItemText primary="Edit Main Goal" />
             </MenuItem>
-            <Fragment>
                 <Dialog
                     open={open}
                     onClose={handleClose}
@@ -174,7 +172,7 @@ export default function EditMainGoal({ mainGoal, updateMainGoals, handleMenuClos
                                 variant="text"
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    handleClose()
+                                    handleClose();
                                 }}>
                                 Cancel
                             </TextButton>
@@ -187,11 +185,8 @@ export default function EditMainGoal({ mainGoal, updateMainGoals, handleMenuClos
                                 Save
                             </PrimaryButton>
                         </div>
-                        <DialogActions>
-                        </DialogActions>
                     </form>
                 </Dialog>
-            </Fragment>
         </>
     );
 }

@@ -1,14 +1,26 @@
-import { Button, Stack, Card, CardContent, Typography, CardActionArea } from '@mui/material';
+// cleaned
+
+import { useState } from 'react';
+import {
+    Button,
+    Stack,
+    Card,
+    CardContent,
+    Typography,
+    CardActionArea,
+    Menu,
+    Box
+} from '@mui/material';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import dayjs from 'dayjs';
 import EditSubgoal from './EditSubgoal';
 import DeleteSubgoal from './DeleteSubgoal';
-import "../App.css"
-import Box from '@mui/material/Box';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useState } from 'react';
-import Menu from '@mui/material/Menu';
-import dayjs from 'dayjs';
+import { CompletedButton } from './ui/CompletedButton';
+import { ActionsMenu } from './ui/ActionsMenu';
+import "./SubgoalCard.css"
 
 export default function SubgoalCard({ selectedMainGoal, updateMainGoals }) {
+
     const subGoals = selectedMainGoal.subGoals
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -34,15 +46,15 @@ export default function SubgoalCard({ selectedMainGoal, updateMainGoals }) {
             );
             if (res.ok) {
                 updateMainGoals();
-                console.log("subGoalToggle fetch成功");
             } else {
-                console.error();
+                console.error("Request failed with status", res.status);
             }
         }
         catch (err) {
-            console.error("通信エラー", err)
+            console.error("Error connecting", err)
         }
     };
+
     return (
         <>
             {subGoals.map((subGoal, index) => {
@@ -53,15 +65,12 @@ export default function SubgoalCard({ selectedMainGoal, updateMainGoals }) {
                         key={subGoal._id}
                         sx={{
                             backgroundColor: subGoal.completed && "#f3e8ff",
-                        }}>
-                        <CardActionArea disableRipple sx={{
-                            "&:focus": {
-                                outline: "none"
-                            },
-                            "&:active": {
-                                outline: "none"
-                            },
-                        }}>
+                        }}
+                    >
+                        <CardActionArea
+                            disableRipple
+                            className='no-outline'
+                        >
                             <CardContent>
                                 <Stack direction="row" alignItems="center">
                                     <Typography variant="h6" fontWeight="600" component="div"
@@ -71,52 +80,47 @@ export default function SubgoalCard({ selectedMainGoal, updateMainGoals }) {
                                         }}>
                                         {index + 1}. {subGoal.title}
                                     </Typography>
-                                    <Box sx={{ display: "flex", alignItems: "center", gap: 1, ml: "auto" }}>
-                                        <Button
+                                    <Box className='button-menu'>
+                                        <CompletedButton
                                             variant={subGoal.completed ? "contained" : "outlined"}
                                             onClick={() => toggleSubGoal(subGoal._id)}
                                             sx={{
-                                                borderColor: "#A76DF3",
-                                                color: "#A76DF3",
                                                 backgroundColor: subGoal.completed ? "#f4e9ff" : "transparent",
-                                                fontWeight: 600,
                                                 "&:hover": {
                                                     backgroundColor: subGoal.completed ? "#f3e8ff" : "#f9f5ff",
-                                                    borderColor: "#9333ea",
                                                 },
-                                                "&:active": {
-                                                    outline: "none"
-                                                },
-                                                "&:focus": { outline: "none" },
                                             }}
-                                        >Completed</Button>
+                                        >
+                                            Completed
+                                        </CompletedButton>
                                         <MoreVertIcon onClick={(e) => handleClick(e, subGoal)} className="actions" />
-                                        <Menu
+                                        <ActionsMenu
                                             anchorEl={anchorEl}
                                             open={openMenu}
                                             onClose={handleMenuClose}
-                                            PaperProps={{
-                                                elevation: 4,
-                                                sx: {
-                                                    borderRadius: 2,
-                                                    mt: 1,
-                                                    minWidth: 180,
-                                                    boxShadow: "0px 2px 4px rgba(0,0,0,0.1)"
-                                                }
-                                            }}
                                         >
-                                            <EditSubgoal subGoal={activeSubgoal} selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals} handleMenuClose={handleMenuClose} />
-                                            <DeleteSubgoal subGoal={activeSubgoal} selectedMainGoal={selectedMainGoal} updateMainGoals={updateMainGoals} handleMenuClose={handleMenuClose} />
-                                        </Menu>
+                                            <EditSubgoal
+                                                subGoal={activeSubgoal}
+                                                selectedMainGoal={selectedMainGoal}
+                                                updateMainGoals={updateMainGoals}
+                                                handleMenuClose={handleMenuClose}
+                                            />
+                                            <DeleteSubgoal
+                                                subGoal={activeSubgoal}
+                                                selectedMainGoal={selectedMainGoal}
+                                                updateMainGoals={updateMainGoals}
+                                                handleMenuClose={handleMenuClose}
+                                            />
+                                        </ActionsMenu>
                                     </Box>
                                 </Stack>
                                 <Typography
                                     variant="body2"
                                     sx={{
+                                        display: subGoal.completed && "none",
                                         color: dayjs(subGoal.dueDate).isAfter(dayjs(), "day")
                                             ? "text.secondary"
                                             : "#ff0000",
-                                        display: subGoal.completed && "none"
                                     }}
                                 >
                                     {dayjs(subGoal.dueDate).isSame(dayjs(), "day")
