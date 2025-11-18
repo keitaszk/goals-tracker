@@ -15,9 +15,9 @@ import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import EditIcon from '@mui/icons-material/Edit';
 import { StyledCloseIcon } from './ui/StyledCloseIcon';
-import "./Dialog.css"
 import { TextButton } from './ui/TextButton';
 import { PrimaryButton } from './ui/PrimaryButton';
+import "./ui/Dialog.css"
 
 export default function EditSubgoal({ selectedMainGoal, subGoal, updateMainGoals, handleMenuClose }) {
 
@@ -44,8 +44,8 @@ export default function EditSubgoal({ selectedMainGoal, subGoal, updateMainGoals
             dueDate: new Date(dueDate),
         };
 
-        const res = await fetch(`http://localhost:3000/api/mainGoals/${mainGoalId}/${subGoal._id}`, {
-            method: "PATCH",
+        const res = await fetch(`http://localhost:3000/mainGoals/${mainGoalId}/subgoals/${subGoal._id}`, {
+            method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(editedSubGoal),
         })

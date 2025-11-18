@@ -19,7 +19,7 @@ import { StyledCloseIcon } from './ui/StyledCloseIcon';
 import { EmojiSelectorButton } from './ui/EmojiSelectorButton';
 import { PrimaryButton } from './ui/PrimaryButton';
 import { TextButton } from './ui/TextButton';
-import "./Dialog.css"
+import "./ui/Dialog.css"
 
 export default function EditMainGoal({ mainGoal, updateMainGoals, handleMenuClose }) {
 
@@ -57,7 +57,7 @@ export default function EditMainGoal({ mainGoal, updateMainGoals, handleMenuClos
             dueDate: new Date(dueDate),
             emoji,
         };
-        const res = await fetch(`http://localhost:3000/api/mainGoals/${mainGoal._id}`, {
+        const res = await fetch(`http://localhost:3000/mainGoals/${mainGoal._id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(editedMainGoal),

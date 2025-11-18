@@ -4,7 +4,6 @@ import { useState } from 'react';
 import {
     Stack,
     DialogTitle,
-    DialogActions,
     Dialog,
     MenuItem,
     ListItemIcon,
@@ -14,7 +13,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { StyledCloseIcon } from './ui/StyledCloseIcon';
 import { PrimaryButton } from './ui/PrimaryButton';
 import { TextButton } from './ui/TextButton';
-import "./Dialog.css"
+import "./ui/Dialog.css"
 
 export default function DeleteMainGoal({ mainGoal, updateMainGoals, handleMenuClose, }) {
 
@@ -32,7 +31,7 @@ export default function DeleteMainGoal({ mainGoal, updateMainGoals, handleMenuCl
     const handleDelete = async (e) => {
         e.preventDefault();
 
-        const res = await fetch(`http://localhost:3000/api/mainGoals/${mainGoal._id}`, {
+        const res = await fetch(`http://localhost:3000/mainGoals/${mainGoal._id}`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
         })
@@ -74,7 +73,6 @@ export default function DeleteMainGoal({ mainGoal, updateMainGoals, handleMenuCl
                     </StyledCloseIcon>
                 </Stack>
                 <form action="" onSubmit={handleDelete}>
-                    <DialogActions>
                         <div className='buttons'>
                             <TextButton
                                 variant="text"
@@ -95,7 +93,6 @@ export default function DeleteMainGoal({ mainGoal, updateMainGoals, handleMenuCl
                                 Delete
                             </PrimaryButton>
                         </div>
-                    </DialogActions>
                 </form>
             </Dialog>
         </>

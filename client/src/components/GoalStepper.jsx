@@ -30,15 +30,14 @@ export default function GoalStepper({ selectedMainGoal }) {
             <Step key={idx}>
               <StepLabel
                 sx={{
-                  "& .MuiStepLabel-label": {
+                  "& .MuiStepLabel-label, & .MuiStepLabel-label.Mui-active": {
                     fontSize: "0.9rem",
-                    marginTop: "10px",
                     textDecoration: subGoal.completed ? "line-through" : "",
                     color: dayjs(subGoal.dueDate).isAfter(dayjs(), "day")
                       ? "#666"
                       : subGoal.completed
                         ? "#666"
-                        : "#FF0000",
+                        : "#FF0000"
                   },
                 }}>
                 {dayjs(subGoal.dueDate).year() === dayjs().year()

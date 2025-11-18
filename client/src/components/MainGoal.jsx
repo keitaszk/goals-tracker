@@ -1,7 +1,7 @@
 // cleaned
 
-import { Box } from "@mui/material"
-import AddSubgoal from "./AddSubgoal"
+import Box from "@mui/material/Box"
+import AddSubgoal from "./AddSubGoal"
 import GoalStepper from "./GoalStepper"
 import SubgoalCard from "./SubgoalCard"
 

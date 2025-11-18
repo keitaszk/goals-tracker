@@ -18,10 +18,10 @@ import dayjs from 'dayjs';
 import 'emoji-picker-element';
 import { AddMainGoalButton } from './ui/AddMainGoalButton';
 import { StyledCloseIcon } from './ui/StyledCloseIcon';
-import "./Dialog.css"
 import { EmojiSelectorButton } from './ui/EmojiSelectorButton';
 import { TextButton } from './ui/TextButton';
 import { PrimaryButton } from './ui/PrimaryButton';
+import "./ui/Dialog.css"
 
 export default function AddMainGoal({ updateMainGoals }) {
 
@@ -60,7 +60,7 @@ export default function AddMainGoal({ updateMainGoals }) {
             emoji,
         };
 
-        const res = await fetch("http://localhost:3000/api/mainGoals", {
+        const res = await fetch("http://localhost:3000/mainGoals", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newMainGoal),

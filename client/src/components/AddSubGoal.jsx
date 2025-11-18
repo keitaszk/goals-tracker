@@ -18,7 +18,7 @@ import { StyledCloseIcon } from './ui/StyledCloseIcon';
 import { TextButton } from './ui/TextButton';
 import { PrimaryButton } from './ui/PrimaryButton';
 import "./AddSubgoal.css"
-import "./Dialog.css"
+import "./ui/Dialog.css"
 
 export default function AddSubgoal({ selectedMainGoal, updateMainGoals }) {
 
@@ -44,7 +44,7 @@ export default function AddSubgoal({ selectedMainGoal, updateMainGoals }) {
             dueDate: new Date(dueDate),
         };
 
-        const res = await fetch(`http://localhost:3000/api/mainGoals/${mainGoalId}`, {
+        const res = await fetch(`http://localhost:3000/mainGoals/${mainGoalId}/subgoals`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newSubGoal),

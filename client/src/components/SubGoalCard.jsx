@@ -2,13 +2,11 @@
 
 import { useState } from 'react';
 import {
-    Button,
     Stack,
     Card,
     CardContent,
     Typography,
     CardActionArea,
-    Menu,
     Box
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -22,6 +20,7 @@ import "./SubgoalCard.css"
 export default function SubgoalCard({ selectedMainGoal, updateMainGoals }) {
 
     const subGoals = selectedMainGoal.subGoals
+    const mainGoalId = selectedMainGoal._id
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [activeSubgoal, setActiveSubgoal] = useState(null);
@@ -41,7 +40,7 @@ export default function SubgoalCard({ selectedMainGoal, updateMainGoals }) {
     const toggleSubGoal = async (subGoalId) => {
         try {
             const res = await fetch(
-                `http://localhost:3000/api/subgoals/${subGoalId}`,
+                `http://localhost:3000/mainGoals/${mainGoalId}/subgoals/${subGoalId}`,
                 { method: "PATCH", headers: { "Content-Type": "application/json" } }
             );
             if (res.ok) {

@@ -1,10 +1,10 @@
 // cleaned
 
-import './App.css'
+import { useState, useEffect } from 'react'
+import { Box, CircularProgress } from '@mui/material'
 import MenuDrawer from './components/MenuDrawer'
 import MainGoal from './components/MainGoal'
-import { Box, CircularProgress } from '@mui/material'
-import { useState, useEffect } from 'react'
+import './App.css'
 
 export default function App() {
 
@@ -14,7 +14,7 @@ export default function App() {
 
   const loadMainGoals = async (shouldSelectDefault = false) => {
     try {
-      const res = await fetch("http://localhost:3000/api/mainGoals");
+      const res = await fetch("http://localhost:3000/mainGoals");
       if (!res.ok) throw new Error("Failed to fetch main goals");
 
       const data = await res.json();
@@ -71,12 +71,7 @@ export default function App() {
   }
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}>
+    <Box>
       <CircularProgress color="secondary" />
     </Box>
   );
