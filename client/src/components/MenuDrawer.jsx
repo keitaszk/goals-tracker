@@ -1,5 +1,3 @@
-// cleaned
-
 import { useState } from 'react';
 import {
     ListSubheader,
@@ -36,7 +34,6 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, updateMainGo
     const openMenu = Boolean(anchorEl);
 
     return (
-        <div>
             <Drawer
                 variant='permanent'
                 className='menu-drawer'
@@ -99,6 +96,5 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, updateMainGo
                     <AddMainGoal updateMainGoals={updateMainGoals} />
                 </List>
             </Drawer>
-        </div>
     );
 }

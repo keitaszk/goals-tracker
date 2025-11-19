@@ -1,9 +1,11 @@
 // cleaned
 
 import { useState, useEffect } from 'react'
-import { Box, CircularProgress } from '@mui/material'
+import { Box, CircularProgress, Typography } from '@mui/material'
 import MenuDrawer from './components/MenuDrawer'
 import MainGoal from './components/MainGoal'
+import EmptyDrawer from './components/EmptyDrawer'
+import targetImg from "./assets/target.png"
 import './App.css'
 
 export default function App() {
@@ -51,7 +53,32 @@ export default function App() {
     setSelectedMainGoal(mainGoals.find(g => g._id === goalId));
   };
 
-  if (!isLoading && selectedMainGoal) {
+  if (isLoading) {
+    return (
+      <CircularProgress color="secondary" />
+    )
+  }
+  // initial view
+  if (mainGoals.length === 0) {
+    return (
+      <Box sx={{ display: 'flex' }}>
+        <EmptyDrawer
+          loadMainGoals={loadMainGoals(true)}
+        ></EmptyDrawer>
+        <Box sx={{ flexGrow: 1, marginTop: "-50px" }}>
+          <img
+            src={targetImg}
+            alt="target illustration"
+            style={{ width: 400 }}
+          />
+          <Typography fontSize="30px" fontWeight="600">
+            Ready to set your first main goal?
+          </Typography>
+        </Box>
+      </Box>
+    )
+  }
+  if (selectedMainGoal) {
     return (
       <Box sx={{ display: 'flex' }}>
         <MenuDrawer
@@ -69,10 +96,5 @@ export default function App() {
       </Box>
     )
   }
-
-  return (
-    <Box>
-      <CircularProgress color="secondary" />
-    </Box>
-  );
+  return null
 }

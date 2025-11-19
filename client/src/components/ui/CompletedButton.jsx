@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 
 export const CompletedButton = styled(Button)(() => ({
     borderColor: "#A76DF3",
+    marginLeft: "30px",
     color: "#A76DF3",
     fontWeight: 600,
     "&:hover": {

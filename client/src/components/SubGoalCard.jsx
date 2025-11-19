@@ -1,5 +1,3 @@
-// cleaned
-
 import { useState } from 'react';
 import {
     Stack,
@@ -74,6 +72,7 @@ export default function SubgoalCard({ selectedMainGoal, updateMainGoals }) {
                                 <Stack direction="row" alignItems="center">
                                     <Typography variant="h6" fontWeight="600" component="div"
                                         sx={{
+                                            maxWidth: "500px",
                                             textDecoration: subGoal.completed && "line-through",
                                             color: subGoal.completed ? "text.secondary" : "text.primary",
                                         }}>

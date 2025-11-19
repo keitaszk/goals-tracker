@@ -1,5 +1,3 @@
-// cleaned
-
 import { useRef, useState, useEffect } from 'react';
 import {
     Stack,

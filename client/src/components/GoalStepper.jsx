@@ -1,5 +1,3 @@
-// cleaned
-
 import {
   Step,
   StepLabel

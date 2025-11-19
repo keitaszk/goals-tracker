@@ -1,5 +1,3 @@
-// cleaned
-
 import { useState } from 'react';
 import {
     MenuItem,

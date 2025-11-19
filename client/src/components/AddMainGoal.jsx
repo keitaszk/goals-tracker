@@ -1,5 +1,3 @@
-// cleaned
-
 import {
     useEffect,
     useState,
@@ -98,7 +96,7 @@ export default function AddMainGoal({ updateMainGoals }) {
                 onClick={handleClickOpen}
                 variant="text"
             >
-                + Add maingoal
+                + Add main goal
             </AddMainGoalButton>
             <Dialog
                 open={open}
