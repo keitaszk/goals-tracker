@@ -37,6 +37,9 @@ export default function AddMainGoal({ updateMainGoals }) {
 
     const handleClose = () => {
         setOpen(false);
+        setDueDate(dayjs());
+        setTitle("");
+        setEmoji("");
     };
 
     const handleClick = (event) => {

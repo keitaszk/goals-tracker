@@ -13,6 +13,7 @@ router.post("/", async (req, res) => {
 
         mainGoal.subGoals.push(subGoalData);
 
+        // sort subgoals in ascending order by due date
         mainGoal.subGoals.sort((a, b) => {
             if (!a.dueDate) return 1;
             if (!b.dueDate) return -1;
@@ -44,6 +45,7 @@ router.put("/:subgoalId", async (req, res) => {
         subGoal.dueDate = dueDate;
         subGoal.completed = completed;
 
+        // sort subgoals in ascending order by due date
         mainGoal.subGoals.sort((a, b) => {
             if (!a.dueDate) return 1;
             if (!b.dueDate) return -1;
@@ -58,7 +60,7 @@ router.put("/:subgoalId", async (req, res) => {
     }
 });
 
-// toggle completed of subgoal
+// toggle a subgoal’s completion status
 router.patch("/:subgoalId", async (req, res) => {
     try {
         const { mainGoalId, subgoalId } = req.params;

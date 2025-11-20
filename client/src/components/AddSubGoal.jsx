@@ -32,6 +32,8 @@ export default function AddSubgoal({ selectedMainGoal, updateMainGoals }) {
 
     const handleClose = () => {
         setOpen(false);
+        setDueDate(dayjs());
+        setTitle("");
     };
 
     const handleSubmit = async (e) => {

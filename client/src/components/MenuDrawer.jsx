@@ -15,7 +15,7 @@ import DeleteMainGoal from './DeleteMainGoal';
 import { ActionsMenu } from './ui/ActionsMenu';
 import "./MenuDrawer.css"
 
-export default function MenuDrawer({ mainGoals, handleSelectedGoal, updateMainGoals }) {
+export default function MenuDrawer({ mainGoals, handleSelectedGoal, updateMainGoals, selectedMainGoal }) {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [activeMainGoal, setActiveMainGoal] = useState(null);
@@ -56,7 +56,10 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, updateMainGo
                             className="main-goal-list"
                             key={mainGoal._id}
                         >
-                            <ListItemButton onClick={() => handleSelectedGoal(mainGoal._id)}>
+                            <ListItemButton 
+                            onClick={() => handleSelectedGoal(mainGoal._id)} 
+                            selected={selectedMainGoal._id === mainGoal._id}
+                            >
                                 <ListItemIcon
                                     sx={{
                                         color: 'text.primary',
