@@ -1,3 +1,5 @@
+// cleaned
+
 import { useState } from 'react';
 import {
     MenuItem,
@@ -12,29 +14,30 @@ import {
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import EditIcon from '@mui/icons-material/Edit';
-import { StyledCloseIcon } from './ui/StyledCloseIcon';
-import { TextButton } from './ui/TextButton';
-import { PrimaryButton } from './ui/PrimaryButton';
-import "./ui/Dialog.css"
+import { StyledCloseIcon } from '../ui/StyledCloseIcon';
+import { TextButton } from '../ui/TextButton';
+import { PrimaryButton } from '../ui/PrimaryButton';
+import "../ui/Dialog.css"
 
 export default function EditSubgoal({ selectedMainGoal, subGoal, updateMainGoals, handleMenuClose }) {
-
-    const mainGoalId = selectedMainGoal._id;
 
     const [open, setOpen] = useState(false);
     const [dueDate, setDueDate] = useState(subGoal ? dayjs(subGoal.dueDate) : null);
     const [title, setTitle] = useState(subGoal ? subGoal.title : null);
 
-    const handleClickOpen = () => {
+    const mainGoalId = selectedMainGoal._id;
+    const token = localStorage.getItem("token");
+
+    const handleDialogOpen = () => {
         setOpen(true);
     };
 
-    const handleClose = () => {
+    const handleDialogClose = () => {
         setOpen(false);
         handleMenuClose();
     };
 
-    const handleSubmit = async (e) => {
+    const handleEdit = async (e) => {
         e.preventDefault();
 
         const editedSubGoal = {
@@ -44,12 +47,15 @@ export default function EditSubgoal({ selectedMainGoal, subGoal, updateMainGoals
 
         const res = await fetch(`http://localhost:3000/mainGoals/${mainGoalId}/subgoals/${subGoal._id}`, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
             body: JSON.stringify(editedSubGoal),
         })
 
         if (res.ok) {
-            handleClose();
+            handleDialogClose();
             updateMainGoals();
         } else {
             console.error("Error editing subgoal", res.status)
@@ -58,7 +64,7 @@ export default function EditSubgoal({ selectedMainGoal, subGoal, updateMainGoals
 
     return (
         <>
-            <MenuItem onClick={handleClickOpen}>
+            <MenuItem onClick={handleDialogOpen}>
                 <ListItemIcon>
                     <EditIcon fontSize="small" />
                 </ListItemIcon>
@@ -66,7 +72,7 @@ export default function EditSubgoal({ selectedMainGoal, subGoal, updateMainGoals
             </MenuItem>
             <Dialog
                 open={open}
-                onClose={handleClose}
+                onClose={handleDialogClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
@@ -74,9 +80,9 @@ export default function EditSubgoal({ selectedMainGoal, subGoal, updateMainGoals
                     <DialogTitle id="alert-dialog-title" sx={{ fontWeight: "bold" }}>
                         {"Edit Subgoal"}
                     </DialogTitle>
-                    <StyledCloseIcon onClick={handleClose}></StyledCloseIcon>
+                    <StyledCloseIcon onClick={handleDialogClose}></StyledCloseIcon>
                 </Stack>
-                <form action="" onSubmit={handleSubmit}>
+                <form action="" onSubmit={handleEdit}>
                     <DialogContent>
                         <div className='text-box'>
                             <h3>Title:</h3>
@@ -93,7 +99,7 @@ export default function EditSubgoal({ selectedMainGoal, subGoal, updateMainGoals
                     <div className='buttons'>
                         <TextButton
                             variant="text"
-                            onClick={handleClose}
+                            onClick={handleDialogClose}
                         >
                             Cancel
                         </TextButton>

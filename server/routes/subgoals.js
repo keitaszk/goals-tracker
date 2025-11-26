@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
 const MainGoal = require("../models/MainGoal");
+const auth = require("../middleware/auth");
 
 // add new subgoal
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
     try {
         const mainGoalId = req.params.mainGoalId;
         const subGoalData = req.body;
@@ -29,7 +30,7 @@ router.post("/", async (req, res) => {
 });
 
 // update subgoal
-router.put("/:subgoalId", async (req, res) => {
+router.put("/:subgoalId", auth, async (req, res) => {
     try {
         const { mainGoalId, subgoalId } = req.params;
         const { title, dueDate, completed } = req.body
@@ -61,7 +62,7 @@ router.put("/:subgoalId", async (req, res) => {
 });
 
 // toggle a subgoal’s completion status
-router.patch("/:subgoalId", async (req, res) => {
+router.patch("/:subgoalId", auth, async (req, res) => {
     try {
         const { mainGoalId, subgoalId } = req.params;
         const mainGoal = await MainGoal.findById(mainGoalId);
@@ -78,7 +79,7 @@ router.patch("/:subgoalId", async (req, res) => {
 });
 
 // delete subgoal
-router.delete("/:subgoalId", async (req, res) => {
+router.delete("/:subgoalId", auth, async (req, res) => {
     try {
         const { mainGoalId, subgoalId } = req.params;
         const mainGoal = await MainGoal.findById(mainGoalId);

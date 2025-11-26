@@ -1,0 +1,17 @@
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #faf7ff;
+}
+
+.form-container {
+    max-width: 380px;
+}
+
+.auth-helper-text.MuiTypography-root {
+    margin-top: 32px;
+    font-size: 0.9rem;
+    color: #808080;
+}

@@ -20,3 +20,8 @@
     background-color: #e9d5ff;
     border-left: 4px solid #a855f7; 
 }
+
+.list-subheader.MuiListSubheader-root {
+text-align: left;
+background-color: #f3e8ff;
+}

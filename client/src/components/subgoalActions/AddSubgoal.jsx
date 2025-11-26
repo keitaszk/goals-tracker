@@ -1,3 +1,5 @@
+// cleaned
+
 import { useState } from 'react';
 import {
     Card,
@@ -12,25 +14,26 @@ import {
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
-import { StyledCloseIcon } from './ui/StyledCloseIcon';
-import { TextButton } from './ui/TextButton';
-import { PrimaryButton } from './ui/PrimaryButton';
+import { StyledCloseIcon } from '../ui/StyledCloseIcon';
+import { TextButton } from '../ui/TextButton';
+import { PrimaryButton } from '../ui/PrimaryButton';
 import "./AddSubgoal.css"
-import "./ui/Dialog.css"
+import "../ui/Dialog.css"
 
 export default function AddSubgoal({ selectedMainGoal, updateMainGoals }) {
-
-    const mainGoalId = selectedMainGoal._id
 
     const [open, setOpen] = useState(false);
     const [dueDate, setDueDate] = useState(dayjs());
     const [title, setTitle] = useState("");
 
-    const handleClickOpen = () => {
+    const mainGoalId = selectedMainGoal._id
+    const token = localStorage.getItem("token");
+
+    const handleDialogOpen = () => {
         setOpen(true);
     };
 
-    const handleClose = () => {
+    const handleDialogClose = () => {
         setOpen(false);
         setDueDate(dayjs());
         setTitle("");
@@ -46,13 +49,16 @@ export default function AddSubgoal({ selectedMainGoal, updateMainGoals }) {
 
         const res = await fetch(`http://localhost:3000/mainGoals/${mainGoalId}/subgoals`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
             body: JSON.stringify(newSubGoal),
         })
 
         if (res.ok) {
             const data = await res.json();
-            handleClose();
+            handleDialogClose();
             updateMainGoals();
         } else {
             console.error("Error adding subgoal", res.status)
@@ -62,7 +68,7 @@ export default function AddSubgoal({ selectedMainGoal, updateMainGoals }) {
     return (
         <Card>
             <CardActionArea
-                onClick={handleClickOpen}
+                onClick={handleDialogOpen}
                 className='no-outline'
             >
                 <CardContent className='center-content'>
@@ -71,7 +77,7 @@ export default function AddSubgoal({ selectedMainGoal, updateMainGoals }) {
                     </Typography>
                     <Dialog
                         open={open}
-                        onClose={handleClose}
+                        onClose={handleDialogClose}
                         onClick={(e) => e.stopPropagation()}
                         aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description"
@@ -80,7 +86,7 @@ export default function AddSubgoal({ selectedMainGoal, updateMainGoals }) {
                             <DialogTitle id="alert-dialog-title" sx={{ fontWeight: "bold" }}>
                                 {"New Subgoal"}
                             </DialogTitle>
-                            <StyledCloseIcon onClick={handleClose}></StyledCloseIcon>
+                            <StyledCloseIcon onClick={handleDialogClose}></StyledCloseIcon>
                         </Stack>
                         <form action="" onSubmit={handleSubmit}>
                             <DialogContent>
@@ -104,7 +110,7 @@ export default function AddSubgoal({ selectedMainGoal, updateMainGoals }) {
                             <div className='buttons'>
                                 <TextButton
                                     variant="text"
-                                    onClick={handleClose}
+                                    onClick={handleDialogClose}
                                 >
                                     Cancel
                                 </TextButton>

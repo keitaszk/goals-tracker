@@ -1,17 +1,22 @@
 const mongoose = require("mongoose");
 
-const subGoalSchema = new mongoose.Schema({
+const subgoalSchema = new mongoose.Schema({
     title: { type: String, required: true },
-    dueDate: { type: Date },
+    dueDate: { type: Date, required: true },
     completed: { type: Boolean, default: false },
 })
 
 const mainGoalSchema = new mongoose.Schema({
     title: { type: String, required: true },
-    dueDate: { type: Date },
+    dueDate: { type: Date, required: true },
     completed: { type: Boolean, default: false },
     emoji: { type: String },
-    subGoals: [subGoalSchema],
+    subGoals: [subgoalSchema],
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    }
 })
 
 const MainGoal = mongoose.model("MainGoal", mainGoalSchema);

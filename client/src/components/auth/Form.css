@@ -1,0 +1,11 @@
+.form-title {
+    font-weight: 700;
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+.text-field {
+    margin-bottom: 16px;
+    background-color: #FFF;
+    border-radius: 8px;
+}

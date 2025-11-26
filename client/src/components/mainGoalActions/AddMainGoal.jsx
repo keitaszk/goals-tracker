@@ -1,3 +1,5 @@
+// cleaned
+
 import {
     useEffect,
     useState,
@@ -14,12 +16,12 @@ import {
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import 'emoji-picker-element';
-import { AddMainGoalButton } from './ui/AddMainGoalButton';
-import { StyledCloseIcon } from './ui/StyledCloseIcon';
-import { EmojiSelectorButton } from './ui/EmojiSelectorButton';
-import { TextButton } from './ui/TextButton';
-import { PrimaryButton } from './ui/PrimaryButton';
-import "./ui/Dialog.css"
+import { AddMainGoalButton } from '../ui/AddMainGoalButton';
+import { StyledCloseIcon } from '../ui/StyledCloseIcon';
+import { EmojiSelectorButton } from '../ui/EmojiSelectorButton';
+import { TextButton } from '../ui/TextButton';
+import { PrimaryButton } from '../ui/PrimaryButton';
+import "../ui/Dialog.css"
 
 export default function AddMainGoal({ updateMainGoals }) {
 
@@ -31,49 +33,8 @@ export default function AddMainGoal({ updateMainGoals }) {
 
     const pickerRef = useRef(null);
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-        setDueDate(dayjs());
-        setTitle("");
-        setEmoji("");
-    };
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleAnchorClose = () => {
-        setAnchorEl(null);
-    }
-
+    const token = localStorage.getItem("token");
     const openEmoji = Boolean(anchorEl);
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        const newMainGoal = {
-            title,
-            dueDate: new Date(dueDate),
-            emoji,
-        };
-
-        const res = await fetch("http://localhost:3000/mainGoals", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newMainGoal),
-        })
-
-        if (res.ok) {
-            handleClose();
-            updateMainGoals();
-        } else {
-            console.error("Request failed with status", res.status)
-        }
-    }
 
     // Listen for the emoji picker's custom "emoji-click" event
     useEffect(() => {
@@ -93,17 +54,62 @@ export default function AddMainGoal({ updateMainGoals }) {
         };
     }, [openEmoji]);
 
+    const handleDialogOpen = () => {
+        setOpen(true);
+    };
+
+    const handleDialogClose = () => {
+        setOpen(false);
+        setDueDate(dayjs());
+        setTitle("");
+        setEmoji("");
+    };
+
+    const handleEmojiOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleEmojiClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const newMainGoal = {
+            title,
+            dueDate: new Date(dueDate),
+            emoji,
+        };
+
+        const res = await fetch("http://localhost:3000/mainGoals", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(newMainGoal),
+        })
+
+        if (res.ok) {
+            handleDialogClose();
+            updateMainGoals();
+        } else {
+            console.error("Request failed with status", res.status)
+        }
+    };
+
     return (
         <>
             <AddMainGoalButton
-                onClick={handleClickOpen}
+                onClick={handleDialogOpen}
                 variant="text"
             >
                 + Add main goal
             </AddMainGoalButton>
             <Dialog
                 open={open}
-                onClose={handleClose}
+                onClose={handleDialogClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
@@ -111,7 +117,7 @@ export default function AddMainGoal({ updateMainGoals }) {
                     <DialogTitle id="alert-dialog-title" sx={{ fontWeight: "bold" }}>
                         {"New Main Goal"}
                     </DialogTitle>
-                    <StyledCloseIcon onClick={handleClose}>
+                    <StyledCloseIcon onClick={handleDialogClose}>
                     </StyledCloseIcon>
                 </Stack>
                 <form action="" onSubmit={handleSubmit}>
@@ -136,7 +142,7 @@ export default function AddMainGoal({ updateMainGoals }) {
                             <h3>Icon:</h3>
                             <span className='emoji'>{emoji}</span>
                             <EmojiSelectorButton
-                                onClick={handleClick}
+                                onClick={handleEmojiOpen}
                                 variant="contained"
                             >
                                 Select Icon
@@ -144,7 +150,7 @@ export default function AddMainGoal({ updateMainGoals }) {
                             <Popover
                                 open={openEmoji}
                                 anchorEl={anchorEl}
-                                onClose={handleAnchorClose}
+                                onClose={handleEmojiClose}
                                 disablePortal
                                 anchorOrigin={{
                                     vertical: 'bottom',
@@ -163,7 +169,7 @@ export default function AddMainGoal({ updateMainGoals }) {
                     <div className='buttons'>
                         <TextButton
                             variant="text"
-                            onClick={handleClose}
+                            onClick={handleDialogClose}
                         >
                             Cancel
                         </TextButton>

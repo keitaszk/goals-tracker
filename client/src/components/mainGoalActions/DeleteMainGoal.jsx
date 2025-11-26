@@ -1,29 +1,31 @@
+// cleaned
+
 import { useState } from 'react';
 import {
-    MenuItem,
-    ListItemIcon,
-    ListItemText,
     Stack,
     DialogTitle,
-    Dialog
+    Dialog,
+    MenuItem,
+    ListItemIcon,
+    ListItemText
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { StyledCloseIcon } from './ui/StyledCloseIcon';
-import { TextButton } from './ui/TextButton';
-import { PrimaryButton } from './ui/PrimaryButton';
-import "./ui/Dialog.css"
+import { StyledCloseIcon } from '../ui/StyledCloseIcon';
+import { PrimaryButton } from '../ui/PrimaryButton';
+import { TextButton } from '../ui/TextButton';
+import "../ui/Dialog.css"
 
-export default function DeleteSubgoal({ subGoal, selectedMainGoal, updateMainGoals, handleMenuClose }) {
-
-    const mainGoalId = selectedMainGoal._id
+export default function DeleteMainGoal({ mainGoal, updateMainGoals, handleMenuClose, }) {
 
     const [open, setOpen] = useState(false);
 
-    const handleClickOpen = () => {
+    const token = localStorage.getItem("token");
+
+    const handleDialogOpen = () => {
         setOpen(true);
     };
 
-    const handleClose = () => {
+    const handleDialogClose = () => {
         setOpen(false);
         handleMenuClose();
     };
@@ -31,52 +33,68 @@ export default function DeleteSubgoal({ subGoal, selectedMainGoal, updateMainGoa
     const handleDelete = async (e) => {
         e.preventDefault();
 
-        const res = await fetch(`http://localhost:3000/mainGoals/${mainGoalId}/subgoals/${subGoal._id}`, {
+        const res = await fetch(`http://localhost:3000/mainGoals/${mainGoal._id}`, {
             method: "DELETE",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
         })
 
         if (res.ok) {
-            handleClose();
+            handleDialogClose();
             updateMainGoals();
         } else {
-            console.error("Error deleting subgoal", res.status)
+            console.error("Error deleting main goal");
         }
     }
+
     return (
         <>
-            <MenuItem onClick={handleClickOpen}>
+            <MenuItem onClick={(e) => {
+                e.stopPropagation();
+                handleDialogOpen();
+            }}>
                 <ListItemIcon>
                     <DeleteIcon fontSize='small' />
                 </ListItemIcon>
-                <ListItemText primary="Delete Subgoal" />
+                <ListItemText primary="Delete Main Goal" />
             </MenuItem>
             <Dialog
                 open={open}
-                onClose={handleClose}
+                onClose={handleDialogClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                     <DialogTitle id="alert-dialog-title" sx={{ fontWeight: "bold" }}>
-                        {`Delete ${subGoal ? subGoal.title : ""}?`}
+                        {`Delete ${mainGoal ? mainGoal.title : ""}?`}
                     </DialogTitle>
                     <StyledCloseIcon
-                        sx={{ mr: 2 }}
-                        onClick={handleClose}
-                    ></StyledCloseIcon>
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleDialogClose();
+                        }}
+                    >
+                    </StyledCloseIcon>
                 </Stack>
                 <form action="" onSubmit={handleDelete}>
                     <div className='buttons'>
                         <TextButton
                             variant="text"
-                            onClick={handleClose}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleDialogClose();
+                            }}
                         >
                             Cancel
                         </TextButton>
                         <PrimaryButton
                             type='submit'
                             variant="contained"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                            }}
                         >
                             Delete
                         </PrimaryButton>

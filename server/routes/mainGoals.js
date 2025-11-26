@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const MainGoal = require("../models/MainGoal");
+const auth = require("../middleware/auth");
 
 // fetch mainGoals
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
     try {
-        const mainGoals = await MainGoal.find();
+        const mainGoals = await MainGoal.find({ userId: req.user.id });
         res.json(mainGoals);
     } catch (err) {
         console.error(err);
@@ -14,18 +15,25 @@ router.get("/", async (req, res) => {
 });
 
 //add new main goal
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
     try {
-        const newMainGoal = new MainGoal(req.body);
+        const { title, dueDate, emoji } = req.body;
+        const newMainGoal = new MainGoal({
+            title,
+            dueDate,
+            emoji,
+            subGoals: [],
+            userId: req.user.id // from auth
+        });
         await newMainGoal.save();
         res.status(201).json(newMainGoal);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
+    } catch (err) {
+        res.status(400).json({ message: err.message });
     }
 });
 
 // update maingoal
-router.put("/:mainGoalId", async (req, res) => {
+router.put("/:mainGoalId", auth, async (req, res) => {
     try {
         const editedMainGoal = await MainGoal.findByIdAndUpdate(req.params.mainGoalId, req.body, {
             new: true,
@@ -37,7 +45,7 @@ router.put("/:mainGoalId", async (req, res) => {
 });
 
 // delete maingoal
-router.delete("/:mainGoalId", async (req, res) => {
+router.delete("/:mainGoalId", auth, async (req, res) => {
     try {
         const deletedMainGoal = await MainGoal.findByIdAndDelete(req.params.mainGoalId);
         if (!deletedMainGoal) {

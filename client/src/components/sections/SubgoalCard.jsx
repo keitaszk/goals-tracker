@@ -1,4 +1,7 @@
+// cleaned
+
 import { useState } from 'react';
+import dayjs from 'dayjs';
 import {
     Stack,
     Card,
@@ -8,22 +11,23 @@ import {
     Box
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import dayjs from 'dayjs';
-import EditSubgoal from './EditSubgoal';
-import DeleteSubgoal from './DeleteSubgoal';
-import { CompletedButton } from './ui/CompletedButton';
-import { ActionsMenu } from './ui/ActionsMenu';
+import EditSubgoal from '../subgoalActions/EditSubgoal';
+import DeleteSubgoal from '../subgoalActions/DeleteSubgoal';
+import { CompletedButton } from '../ui/CompletedButton';
+import { ActionsMenu } from '../ui/ActionsMenu';
 import "./SubgoalCard.css"
 
 export default function SubgoalCard({ selectedMainGoal, updateMainGoals }) {
 
-    const subGoals = selectedMainGoal.subGoals
-    const mainGoalId = selectedMainGoal._id
-
     const [anchorEl, setAnchorEl] = useState(null);
     const [activeSubgoal, setActiveSubgoal] = useState(null);
 
-    const handleClick = (event, subGoal) => {
+    const subGoals = selectedMainGoal.subGoals
+    const mainGoalId = selectedMainGoal._id
+    const token = localStorage.getItem("token");
+    const openMenu = Boolean(anchorEl);
+
+    const handleMenuOpen = (event, subGoal) => {
         setAnchorEl(event.currentTarget);
         setActiveSubgoal(subGoal)
     };
@@ -33,13 +37,16 @@ export default function SubgoalCard({ selectedMainGoal, updateMainGoals }) {
         setActiveSubgoal(null);
     };
 
-    const openMenu = Boolean(anchorEl);
-
     const toggleSubGoal = async (subGoalId) => {
         try {
             const res = await fetch(
-                `http://localhost:3000/mainGoals/${mainGoalId}/subgoals/${subGoalId}`,
-                { method: "PATCH", headers: { "Content-Type": "application/json" } }
+                `http://localhost:3000/mainGoals/${mainGoalId}/subgoals/${subGoalId}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            }
             );
             if (res.ok) {
                 updateMainGoals();
@@ -55,7 +62,26 @@ export default function SubgoalCard({ selectedMainGoal, updateMainGoals }) {
     return (
         <>
             {subGoals.map((subGoal, index) => {
-                const daysLeft = dayjs(subGoal.dueDate).diff(dayjs(), "day")
+
+                const daysDiff = dayjs(subGoal.dueDate).startOf("day").diff(dayjs().startOf("day"), "day");
+                const isToday = dayjs(subGoal.dueDate).isSame(dayjs(), "day");
+                const isPast = dayjs(subGoal.dueDate).isBefore(dayjs(), "day");
+                const absDays = Math.abs(daysDiff);
+
+                let daysColor = "";
+                let daysText = "";
+
+                if (isToday) {
+                    daysColor = "#ff0000";
+                    daysText = "Today";
+                } else if (isPast) {
+                    daysColor = "#ff0000";
+                    daysText = absDays === 1 ? "Yesterday" : `${absDays} days ago`;
+                } else {
+                    daysColor = "text.secondary";
+                    daysText = absDays === 1 ? "Tomorrow" : `${absDays} days left`;
+                }
+
                 return (
                     <Card
                         className="subgoal-card"
@@ -70,11 +96,15 @@ export default function SubgoalCard({ selectedMainGoal, updateMainGoals }) {
                         >
                             <CardContent>
                                 <Stack direction="row" alignItems="center">
-                                    <Typography variant="h6" fontWeight="600" component="div"
+                                    <Typography
+                                        variant="h6"
+                                        fontWeight="600"
+                                        // component="div"
                                         sx={{
-                                            maxWidth: "500px",
+                                            // maxWidth: "500px",
                                             textDecoration: subGoal.completed && "line-through",
                                             color: subGoal.completed ? "text.secondary" : "text.primary",
+                                            wordBreak: "break-word",
                                         }}>
                                         {index + 1}. {subGoal.title}
                                     </Typography>
@@ -91,7 +121,7 @@ export default function SubgoalCard({ selectedMainGoal, updateMainGoals }) {
                                         >
                                             Completed
                                         </CompletedButton>
-                                        <MoreVertIcon onClick={(e) => handleClick(e, subGoal)} className="actions" />
+                                        <MoreVertIcon onClick={(e) => handleMenuOpen(e, subGoal)} className="actions" />
                                         <ActionsMenu
                                             anchorEl={anchorEl}
                                             open={openMenu}
@@ -116,16 +146,10 @@ export default function SubgoalCard({ selectedMainGoal, updateMainGoals }) {
                                     variant="body2"
                                     sx={{
                                         display: subGoal.completed && "none",
-                                        color: dayjs(subGoal.dueDate).isAfter(dayjs(), "day")
-                                            ? "text.secondary"
-                                            : "#ff0000",
+                                        color: daysColor
                                     }}
                                 >
-                                    {dayjs(subGoal.dueDate).isSame(dayjs(), "day")
-                                        ? "Today"
-                                        : dayjs(subGoal.dueDate).isBefore(dayjs(), "day")
-                                            ? `${Math.abs(daysLeft)} days ago`
-                                            : `${daysLeft} days left`}
+                                    {daysText}
                                 </Typography>
                             </CardContent>
                         </CardActionArea>

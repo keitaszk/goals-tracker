@@ -1,0 +1,14 @@
+.main-app-container {
+    display: flex;
+    height: auto;
+    text-align: center;
+    min-height: 100vh;
+}
+
+.main-goal-wrapper {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-block: 100px;
+}

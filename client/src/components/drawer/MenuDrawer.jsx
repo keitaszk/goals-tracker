@@ -1,3 +1,5 @@
+// cleaned
+
 import { useState } from 'react';
 import {
     ListSubheader,
@@ -7,12 +9,14 @@ import {
     ListItem,
     ListItemIcon,
     ListItemText,
+    Box,
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import AddMainGoal from './AddMainGoal';
-import EditMainGoal from './EditMainGoal';
-import DeleteMainGoal from './DeleteMainGoal';
-import { ActionsMenu } from './ui/ActionsMenu';
+import AddMainGoal from '../mainGoalActions/AddMainGoal';
+import EditMainGoal from '../mainGoalActions/EditMainGoal';
+import DeleteMainGoal from '../mainGoalActions/DeleteMainGoal';
+import Logout from '../auth/Logout';
+import { ActionsMenu } from '../ui/ActionsMenu';
 import "./MenuDrawer.css"
 
 export default function MenuDrawer({ mainGoals, handleSelectedGoal, updateMainGoals, selectedMainGoal }) {
@@ -20,7 +24,9 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, updateMainGo
     const [anchorEl, setAnchorEl] = useState(null);
     const [activeMainGoal, setActiveMainGoal] = useState(null);
 
-    const handleClick = (event, mainGoal) => {
+    const openMenu = Boolean(anchorEl);
+
+    const handleMenuOpen = (event, mainGoal) => {
         setAnchorEl(event.currentTarget);
         // pass the mapped mainGoal to the Menu
         setActiveMainGoal(mainGoal);
@@ -31,34 +37,30 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, updateMainGo
         setActiveMainGoal(null);
     };
 
-    const openMenu = Boolean(anchorEl);
-
     return (
-            <Drawer
-                variant='permanent'
-                className='menu-drawer'
-            >
-                <List
-                    subheader={
-                        <ListSubheader
-                            component="div"
-                            sx={{
-                                textAlign: "left",
-                                backgroundColor: "#f3e8ff"
-                            }}
-                        >
-                            Main Goals
-                        </ListSubheader>
-                    }>
+        <Drawer
+            variant='permanent'
+            className='menu-drawer'
+        >
+            <List
+                subheader={
+                    <ListSubheader
+                        component="div"
+                        className='list-subheader'
+                    >
+                        Main Goals
+                    </ListSubheader>
+                }>
+                <Box sx={{ flexGrow: 1 }}>
                     {mainGoals.map((mainGoal) => (
                         <ListItem
                             disablePadding
                             className="main-goal-list"
                             key={mainGoal._id}
                         >
-                            <ListItemButton 
-                            onClick={() => handleSelectedGoal(mainGoal._id)} 
-                            selected={selectedMainGoal._id === mainGoal._id}
+                            <ListItemButton
+                                onClick={() => handleSelectedGoal(mainGoal._id)}
+                                selected={selectedMainGoal._id === mainGoal._id}
                             >
                                 <ListItemIcon
                                     sx={{
@@ -68,10 +70,13 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, updateMainGo
                                 >
                                     {mainGoal.emoji}
                                 </ListItemIcon>
-                                <ListItemText primary={mainGoal.title} />
+                                <ListItemText
+                                    sx={{ wordBreak: "break-word" }}
+                                    primary={mainGoal.title}
+                                />
                                 <MoreVertIcon
                                     onClick={(e) => {
-                                        handleClick(e, mainGoal);
+                                        handleMenuOpen(e, mainGoal);
                                     }}
                                     className="actions" />
                                 {/* Menu renders only once (not one menu per mainGoal) */}
@@ -97,7 +102,9 @@ export default function MenuDrawer({ mainGoals, handleSelectedGoal, updateMainGo
                         </ListItem>
                     ))}
                     <AddMainGoal updateMainGoals={updateMainGoals} />
-                </List>
-            </Drawer>
+                </Box>
+            </List>
+            <Logout></Logout>
+        </Drawer>
     );
 }

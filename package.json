@@ -1,5 +1,9 @@
 {
   "dependencies": {
-    "react-color": "^2.19.3"
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.2.3",
+    "jsonwebtoken": "^9.0.2",
+    "react-color": "^2.19.3",
+    "react-router-dom": "^7.9.6"
   }
 }
