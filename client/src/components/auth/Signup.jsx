@@ -39,6 +39,11 @@ export default function Signup({ setOpenSnack }) {
             setPasswordError(false);
         }
 
+        if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password)) {
+            setErrorMsg("Password must be at least 8 characters and contain letters and numbers");
+            return;
+        }
+
         const newUser = {
             username,
             password

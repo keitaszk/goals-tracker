@@ -1,7 +1,9 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
+const dbUrl = process.env.MONGODB_URL;
 
 const mainGoalsRoutes = require("./routes/mainGoals");
 const subgoalsRoutes = require("./routes/subgoals");
@@ -10,9 +12,11 @@ const authRoutes = require("./routes/auth");
 app.use(cors());
 app.use(express.json());
 
+// 'mongodb://127.0.0.1:27017/goals'
+
 mongoose.connect('mongodb://127.0.0.1:27017/goals')
     .then(() => {
-        console.log('Connected!');
+        console.log('MongoDB Connected!');
     })
     .catch((err) => {
         console.error("Connection failed:", err);

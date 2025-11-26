@@ -13,6 +13,11 @@ router.post("/register", async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ message: "Someone already has that username." });
         }
+
+        if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password)) {
+            return res.status(400).json({ message: "Password must be at least 8 characters and contain letters and numbers" });
+        }
+
         const hashedPw = await bcrypt.hash(password, 12);
 
         const user = new User({

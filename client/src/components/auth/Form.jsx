@@ -22,6 +22,7 @@ export default function Form({ username, setUsername, password, setPaassword, us
             <Typography
                 className="form-title"
                 variant="h4"
+                sx={{mb: 4, fontWeight: 700}}
             >
                 Goals Tracker
             </Typography>
@@ -36,6 +37,7 @@ export default function Form({ username, setUsername, password, setPaassword, us
                 variant="outlined"
                 error={usernameError}
                 helperText={usernameError ? "Username is required" : ""}
+                sx={{mb: 2}}
             />
 
             {/* Password */}
@@ -49,6 +51,7 @@ export default function Form({ username, setUsername, password, setPaassword, us
                 variant="outlined"
                 error={passwordError}
                 helperText={passwordError ? "Password is required" : ""}
+                sx={{mb: 2}}
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
