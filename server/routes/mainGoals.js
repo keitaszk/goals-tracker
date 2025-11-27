@@ -23,7 +23,7 @@ router.post("/", auth, async (req, res) => {
             dueDate,
             emoji,
             subGoals: [],
-            userId: req.user.id // from auth
+            userId: req.user.id // from auth middleware
         });
         await newMainGoal.save();
         res.status(201).json(newMainGoal);
@@ -38,7 +38,7 @@ router.put("/:mainGoalId", auth, async (req, res) => {
         const editedMainGoal = await MainGoal.findByIdAndUpdate(req.params.mainGoalId, req.body, {
             new: true,
         });
-        res.json(editedMainGoal); // respond edited data to React
+        res.json(editedMainGoal); 
     } catch (err) {
         res.status(400).json({ message: err.message })
     }

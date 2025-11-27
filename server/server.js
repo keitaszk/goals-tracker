@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
-const dbUrl = process.env.MONGODB_URL;
+const mongoUri = process.env.MONGODB_URI;
 const port = process.env.PORT || 3000;
 
 const mainGoalsRoutes = require("./routes/mainGoals");
@@ -13,7 +13,7 @@ const authRoutes = require("./routes/auth");
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect(dbUrl)
+mongoose.connect(mongoUri)
     .then(() => {
         console.log('MongoDB Connected!');
     })

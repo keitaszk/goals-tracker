@@ -9,7 +9,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import "./Form.css"
 
-export default function Form({ username, setUsername, password, setPaassword, usernameError, passwordError, errorMsg }) {
+export default function Form({ username, setUsername, password, setPassword, usernameError, passwordError, errorMsg }) {
 
     const [showPassword, setShowPassword] = useState(false);
 
@@ -44,7 +44,7 @@ export default function Form({ username, setUsername, password, setPaassword, us
             <TextField
                 className="text-field"
                 fullWidth
-                onChange={(e) => setPaassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 value={password}
                 label="Password"
                 type={showPassword ? "text" : "password"}

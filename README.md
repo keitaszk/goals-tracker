@@ -47,21 +47,74 @@
 - `DELETE /mainGoals/:id` — delete a main goal
 ### Subgoals
 - `POST /mainGoals/:mainGoalId/subgoals` — create a subgoal
-- `PUT /subgoals/:id` — update a subgoal
-- `PATCH /subgoals/:id` — toggle a subgoal’s completion status
-- `DELETE /subgoals/:id` — delete a subgoal
+- `PUT /mainGoals/:mainGoalId/subgoals/:id` — update a subgoal
+- `PATCH /mainGoals/:mainGoalId/subgoals/:id` — toggle a subgoal’s completion status
+- `DELETE /mainGoals/:mainGoalId/subgoals/:id` — delete a subgoal
 
-## Local Setup (Coming Soon)
-Instructions for running the client and server locally will be added soon.
+## Local Setup
+### 1. Clone the repository
+```bash
+git clone https://github.com/keitaszk/goals-tracker.git
+cd goals-tracker
+```
+### 2. Install dependencies
+**Backend**
+```bash
+cd server
+npm install
+```
+**Frontend**
+```bash
+cd ../client
+npm install
+```
+### 3. Set environment variables
+Create a `.env` file inside the **server** directory:
+```env
+JWT_SECRET=any_string_here
+MONGODB_URI=your_mongodb_connection_string
+```
+Example (MongoDB Atlas):
+```env
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/goals-tracker
+```
+If you have MongoDB installed locally:
+```env
+MONGODB_URI=mongodb://127.0.0.1:27017/goals-tracker
+```
+Don't forget to start MongoDB locally before running the server.
+### 4. Start the backend server
+```bash
+cd server
+npm run dev
+```
+The backend will run on: `http://localhost:3000`
+### 5. Start the frontend app
+```bash
+cd client
+npm run dev
+```
+The frontend will run on: `http://localhost:5173`
+### 6. Configure the frontend API URL
+Inside `client/src/config.js`:
+```js
+export const BASE_URL = "http://localhost:3000";
+```
+### 7. Open the application
+Open your browser and visit:
+```
+http://localhost:5173
+```
+You should now be able to sign up, log in, and use the app fully in your local environment!
 
 ## Deployment Status
-The application is fully deployed and available online.
+The application is deployed and publicly accessible.
 - **Frontend:** Vercel
 - **Backend:** Render
 - **Database:** MongoDB Atlas
 
 You can access the live version here:
-[Live Demo](#live-demo)
+[https://goals-tracker-one.vercel.app/](https://goals-tracker-one.vercel.app/)
 
 ## Future Improvements
 - Add a horizontal calendar view that displays all main goals
