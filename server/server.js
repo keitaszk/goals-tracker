@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
 const dbUrl = process.env.MONGODB_URL;
+const port = process.env.PORT || 3000;
 
 const mainGoalsRoutes = require("./routes/mainGoals");
 const subgoalsRoutes = require("./routes/subgoals");
@@ -12,9 +13,7 @@ const authRoutes = require("./routes/auth");
 app.use(cors());
 app.use(express.json());
 
-// 'mongodb://127.0.0.1:27017/goals'
-
-mongoose.connect('mongodb://127.0.0.1:27017/goals')
+mongoose.connect(dbUrl)
     .then(() => {
         console.log('MongoDB Connected!');
     })
@@ -26,6 +25,6 @@ app.use("/mainGoals", mainGoalsRoutes);
 app.use("/mainGoals/:mainGoalId/subgoals", subgoalsRoutes);
 app.use("/auth", authRoutes)
 
-app.listen(3000, () => {
-    console.log("Server running on port 3000")
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`)
 });

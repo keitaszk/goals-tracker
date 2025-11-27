@@ -17,6 +17,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { StyledCloseIcon } from '../ui/StyledCloseIcon';
 import { TextButton } from '../ui/TextButton';
 import { PrimaryButton } from '../ui/PrimaryButton';
+import { BASE_URL } from "../../config";
 import "../ui/Dialog.css"
 
 export default function EditSubgoal({ selectedMainGoal, subGoal, updateMainGoals, handleMenuClose }) {
@@ -24,6 +25,7 @@ export default function EditSubgoal({ selectedMainGoal, subGoal, updateMainGoals
     const [open, setOpen] = useState(false);
     const [dueDate, setDueDate] = useState(subGoal ? dayjs(subGoal.dueDate) : null);
     const [title, setTitle] = useState(subGoal ? subGoal.title : null);
+    const [titleError, setTitleError] = useState(false);
 
     const mainGoalId = selectedMainGoal._id;
     const token = localStorage.getItem("token");
@@ -40,12 +42,17 @@ export default function EditSubgoal({ selectedMainGoal, subGoal, updateMainGoals
     const handleEdit = async (e) => {
         e.preventDefault();
 
+        if (title.trim() === "") {
+            setTitleError(true);
+            return;
+        }
+
         const editedSubGoal = {
             title,
             dueDate: new Date(dueDate),
         };
 
-        const res = await fetch(`http://localhost:3000/mainGoals/${mainGoalId}/subgoals/${subGoal._id}`, {
+        const res = await fetch(`${BASE_URL}/mainGoals/${mainGoalId}/subgoals/${subGoal._id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -86,7 +93,13 @@ export default function EditSubgoal({ selectedMainGoal, subGoal, updateMainGoals
                     <DialogContent>
                         <div className='text-box'>
                             <h3>Title:</h3>
-                            <TextField id="outlined-basic" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} />
+                            <TextField
+                                id="outlined-basic"
+                                variant="outlined"
+                                value={title}
+                                error={titleError}
+                                helperText={titleError ? "Title is required" : ""}
+                                onChange={(e) => setTitle(e.target.value)} />
                         </div>
                         <div className='text-box'>
                             <h3>Due date:</h3>

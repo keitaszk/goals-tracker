@@ -9,6 +9,7 @@ import {
 import Form from "./Form";
 import { AuthButton } from "../ui/AuthButton";
 import { StyledLink } from "../ui/StyledLink";
+import { BASE_URL } from "../../config";
 import "./Auth.css"
 
 export default function Signup({ setOpenSnack }) {
@@ -49,7 +50,7 @@ export default function Signup({ setOpenSnack }) {
             password
         };
 
-        const res = await fetch("http://localhost:3000/auth/register", {
+        const res = await fetch(`${BASE_URL}/auth/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newUser),

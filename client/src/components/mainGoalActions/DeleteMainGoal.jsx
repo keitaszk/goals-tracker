@@ -13,6 +13,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { StyledCloseIcon } from '../ui/StyledCloseIcon';
 import { PrimaryButton } from '../ui/PrimaryButton';
 import { TextButton } from '../ui/TextButton';
+import { BASE_URL } from "../../config";
 import "../ui/Dialog.css"
 
 export default function DeleteMainGoal({ mainGoal, updateMainGoals, handleMenuClose, }) {
@@ -33,7 +34,7 @@ export default function DeleteMainGoal({ mainGoal, updateMainGoals, handleMenuCl
     const handleDelete = async (e) => {
         e.preventDefault();
 
-        const res = await fetch(`http://localhost:3000/mainGoals/${mainGoal._id}`, {
+        const res = await fetch(`${BASE_URL}/mainGoals/${mainGoal._id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",

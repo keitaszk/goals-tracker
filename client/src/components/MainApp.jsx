@@ -14,6 +14,7 @@ import MenuDrawer from './drawer/MenuDrawer'
 import MainGoal from './sections/MainGoal'
 import EmptyDrawer from './drawer/EmptyDrawer'
 import targetImg from "../assets/target.png"
+import { BASE_URL } from "../config";
 import "./MainApp.css"
 
 export default function MainApp() {
@@ -37,7 +38,7 @@ export default function MainApp() {
 
   const loadMainGoals = async (shouldSelectDefault = false) => {
     try {
-      const res = await fetch("http://localhost:3000/mainGoals", {
+      const res = await fetch(`${BASE_URL}/mainGoals`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`

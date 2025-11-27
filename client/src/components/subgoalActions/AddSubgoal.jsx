@@ -17,6 +17,7 @@ import dayjs from 'dayjs';
 import { StyledCloseIcon } from '../ui/StyledCloseIcon';
 import { TextButton } from '../ui/TextButton';
 import { PrimaryButton } from '../ui/PrimaryButton';
+import { BASE_URL } from "../../config";
 import "./AddSubgoal.css"
 import "../ui/Dialog.css"
 
@@ -25,6 +26,7 @@ export default function AddSubgoal({ selectedMainGoal, updateMainGoals }) {
     const [open, setOpen] = useState(false);
     const [dueDate, setDueDate] = useState(dayjs());
     const [title, setTitle] = useState("");
+    const [titleError, setTitleError] = useState(false);
 
     const mainGoalId = selectedMainGoal._id
     const token = localStorage.getItem("token");
@@ -37,17 +39,23 @@ export default function AddSubgoal({ selectedMainGoal, updateMainGoals }) {
         setOpen(false);
         setDueDate(dayjs());
         setTitle("");
+        setTitleError(false);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (title.trim() === "") {
+            setTitleError(true);
+            return;
+        }
 
         const newSubGoal = {
             title,
             dueDate: new Date(dueDate),
         };
 
-        const res = await fetch(`http://localhost:3000/mainGoals/${mainGoalId}/subgoals`, {
+        const res = await fetch(`${BASE_URL}/mainGoals/${mainGoalId}/subgoals`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -96,6 +104,8 @@ export default function AddSubgoal({ selectedMainGoal, updateMainGoals }) {
                                         id="outlined-basic"
                                         variant="outlined"
                                         value={title}
+                                        error={titleError}
+                                        helperText={titleError ? "Title is required" : ""}
                                         onChange={(e) => setTitle(e.target.value)}
                                     />
                                 </div>

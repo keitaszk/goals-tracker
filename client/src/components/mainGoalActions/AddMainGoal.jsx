@@ -21,6 +21,7 @@ import { StyledCloseIcon } from '../ui/StyledCloseIcon';
 import { EmojiSelectorButton } from '../ui/EmojiSelectorButton';
 import { TextButton } from '../ui/TextButton';
 import { PrimaryButton } from '../ui/PrimaryButton';
+import { BASE_URL } from "../../config";
 import "../ui/Dialog.css"
 
 export default function AddMainGoal({ updateMainGoals }) {
@@ -30,6 +31,7 @@ export default function AddMainGoal({ updateMainGoals }) {
     const [title, setTitle] = useState("");
     const [emoji, setEmoji] = useState("");
     const [anchorEl, setAnchorEl] = useState(null);
+    const [titleError, setTitleError] = useState(false);
 
     const pickerRef = useRef(null);
 
@@ -63,6 +65,7 @@ export default function AddMainGoal({ updateMainGoals }) {
         setDueDate(dayjs());
         setTitle("");
         setEmoji("");
+        setTitleError(false);
     };
 
     const handleEmojiOpen = (event) => {
@@ -76,13 +79,17 @@ export default function AddMainGoal({ updateMainGoals }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (title.trim() === "") {
+            setTitleError(true);
+            return;
+        }
         const newMainGoal = {
             title,
             dueDate: new Date(dueDate),
             emoji,
         };
 
-        const res = await fetch("http://localhost:3000/mainGoals", {
+        const res = await fetch(`${BASE_URL}/mainGoals`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -128,6 +135,8 @@ export default function AddMainGoal({ updateMainGoals }) {
                                 id="outlined-basic"
                                 variant="outlined"
                                 value={title}
+                                error={titleError}
+                                helperText={titleError ? "Title is required" : ""}
                                 onChange={(e) => setTitle(e.target.value)}
                             />
                         </div>

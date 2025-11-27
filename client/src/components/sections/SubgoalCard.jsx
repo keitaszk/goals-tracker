@@ -15,6 +15,7 @@ import EditSubgoal from '../subgoalActions/EditSubgoal';
 import DeleteSubgoal from '../subgoalActions/DeleteSubgoal';
 import { CompletedButton } from '../ui/CompletedButton';
 import { ActionsMenu } from '../ui/ActionsMenu';
+import { BASE_URL } from "../../config";
 import "./SubgoalCard.css"
 
 export default function SubgoalCard({ selectedMainGoal, updateMainGoals }) {
@@ -40,7 +41,7 @@ export default function SubgoalCard({ selectedMainGoal, updateMainGoals }) {
     const toggleSubGoal = async (subGoalId) => {
         try {
             const res = await fetch(
-                `http://localhost:3000/mainGoals/${mainGoalId}/subgoals/${subGoalId}`, {
+                `${BASE_URL}/mainGoals/${mainGoalId}/subgoals/${subGoalId}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

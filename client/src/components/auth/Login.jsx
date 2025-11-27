@@ -1,5 +1,4 @@
 // cleaned
-
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import {
@@ -12,6 +11,7 @@ import Form from "./Form";
 import { AuthButton } from "../ui/AuthButton";
 import { StyledLink } from "../ui/StyledLink";
 import { StyledAlert } from "../ui/StyledAlert";
+import { BASE_URL } from "../../config";
 import "./Auth.css"
 
 export default function Login({ openSnack, setOpenSnack }) {
@@ -47,7 +47,7 @@ export default function Login({ openSnack, setOpenSnack }) {
             password
         };
 
-        const res = await fetch("http://localhost:3000/auth/login", {
+        const res = await fetch(`${BASE_URL}/auth/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(user),

@@ -19,6 +19,7 @@ import { StyledCloseIcon } from '../ui/StyledCloseIcon';
 import { EmojiSelectorButton } from '../ui/EmojiSelectorButton';
 import { PrimaryButton } from '../ui/PrimaryButton';
 import { TextButton } from '../ui/TextButton';
+import { BASE_URL } from "../../config";
 import "../ui/Dialog.css"
 
 export default function EditMainGoal({ mainGoal, updateMainGoals, handleMenuClose }) {
@@ -28,6 +29,7 @@ export default function EditMainGoal({ mainGoal, updateMainGoals, handleMenuClos
     const [title, setTitle] = useState(mainGoal ? mainGoal.title : null);
     const [emoji, setEmoji] = useState(mainGoal ? mainGoal.emoji : null);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [titleError, setTitleError] = useState(false);
 
     const pickerRef = useRef(null);
 
@@ -71,12 +73,19 @@ export default function EditMainGoal({ mainGoal, updateMainGoals, handleMenuClos
 
     const handleEdit = async (e) => {
         e.preventDefault();
+
+        if (title.trim() === "") {
+            setTitleError(true);
+            return;
+        }
+
         const editedMainGoal = {
             title,
             dueDate: new Date(dueDate),
             emoji,
         };
-        const res = await fetch(`http://localhost:3000/mainGoals/${mainGoal._id}`, {
+
+        const res = await fetch(`${BASE_URL}/mainGoals/${mainGoal._id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -133,6 +142,8 @@ export default function EditMainGoal({ mainGoal, updateMainGoals, handleMenuClos
                                 id="outlined-basic"
                                 variant="outlined"
                                 value={title}
+                                error={titleError}
+                                helperText={titleError ? "Title is required" : ""}
                                 onChange={(e) => setTitle(e.target.value)}
                             />
                         </div>
