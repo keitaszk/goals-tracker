@@ -12,3 +12,10 @@
     justify-content: center;
     padding-block: 100px;
 }
+
+.loading {
+display: flex;
+height: 100vh;
+align-items: center;
+justify-content: center;
+}

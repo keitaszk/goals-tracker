@@ -76,7 +76,7 @@ export default function MainApp() {
         <EmptyDrawer loadMainGoals={loadMainGoals(true)}>
         </EmptyDrawer>
         <Box className="main-goal-wrapper">
-          <Stack sx={{alignItems: "center"}}>
+          <Stack sx={{ alignItems: "center" }}>
             <img
               src={targetImg}
               alt="target illustration"
@@ -108,5 +108,9 @@ export default function MainApp() {
       </Box>
     )
   }
-  return <CircularProgress color="secondary" />
+  return (
+    <Box className="loading">
+      <CircularProgress color="secondary" />
+    </Box>
+  )
 }
