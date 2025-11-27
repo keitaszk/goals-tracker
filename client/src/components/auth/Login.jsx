@@ -62,7 +62,7 @@ export default function Login({ openSnack, setOpenSnack }) {
         } else {
             setUsername("");
             setPassword("");
-            setErrorMsg(data.message || "Registration failed");
+            setErrorMsg(data.message || "Login failed");
         }
     }
 

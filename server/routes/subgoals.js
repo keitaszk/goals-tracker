@@ -32,8 +32,8 @@ router.post("/", auth, async (req, res) => {
 // update subgoal
 router.put("/:subgoalId", auth, async (req, res) => {
     try {
-        const { mainGoalId, subgoalId } = req.params;
-        const { title, dueDate, completed } = req.body
+        const { mainGoalId, subgoalId, completed } = req.params;
+        const { title, dueDate } = req.body
         const mainGoal = await MainGoal.findById(mainGoalId);
         if (!mainGoal) {
             return res.status(404).json({ message: "Main goal not found" });

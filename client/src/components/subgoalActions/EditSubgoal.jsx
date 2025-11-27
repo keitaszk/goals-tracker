@@ -50,6 +50,7 @@ export default function EditSubgoal({ selectedMainGoal, subGoal, updateMainGoals
         const editedSubGoal = {
             title,
             dueDate: new Date(dueDate),
+            completed: subGoal.completed
         };
 
         const res = await fetch(`${BASE_URL}/mainGoals/${mainGoalId}/subgoals/${subGoal._id}`, {
