@@ -17,7 +17,7 @@ import "./Auth.css"
 export default function Login({ openSnack, setOpenSnack }) {
 
     const [username, setUsername] = useState("");
-    const [password, setPaassword] = useState("");
+    const [password, setPassword] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
     const [usernameError, setUsernameError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
@@ -61,7 +61,7 @@ export default function Login({ openSnack, setOpenSnack }) {
             window.location.reload();
         } else {
             setUsername("");
-            setPaassword("");
+            setPassword("");
             setErrorMsg(data.message || "Registration failed");
         }
     }
@@ -74,7 +74,7 @@ export default function Login({ openSnack, setOpenSnack }) {
                         username={username}
                         setUsername={setUsername}
                         password={password}
-                        setPaassword={setPaassword}
+                        setPassword={setPassword}
                         usernameError={usernameError}
                         passwordError={passwordError}
                         errorMsg={errorMsg}
