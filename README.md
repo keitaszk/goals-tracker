@@ -2,6 +2,10 @@
 
 ### A goal-tracking project written in JavaScript that helps users break big objectives into smaller steps and monitor their progress through an intuitive interface.
 
+## Live Demo
+
+[https://goals-tracker-one.vercel.app/](https://goals-tracker-one.vercel.app/)
+
 ## UI Example
 <img src="client/src/assets/ui-example.png" width="800px">
 
@@ -33,6 +37,8 @@
 ```
 
 ## API Endpoints
+### Auth
+- `POST /auth/signup`
 ### Main Goals
 - `GET /mainGoals` — fetch all main goals
 - `POST /mainGoals` — create a main goal

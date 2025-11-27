@@ -5,7 +5,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-router.post("/register", async (req, res) => {
+router.post("/signup", async (req, res) => {
     try {
         const { username, password } = req.body;
         const existingUser = await User.findOne({ username });
