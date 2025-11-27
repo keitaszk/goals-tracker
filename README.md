@@ -7,7 +7,7 @@
 [https://goals-tracker-one.vercel.app/](https://goals-tracker-one.vercel.app/)
 
 ## UI Example
-<img src="client/src/assets/ui-example.png" width="800px">
+<img src="assets/ui-example.png" width="800px">
 
 ## Features
 - Create main goals with due dates and custom icon
@@ -38,7 +38,8 @@
 
 ## API Endpoints
 ### Auth
-- `POST /auth/signup`
+- `POST /auth/signup` - create an account
+- `POST /auth/login` - login and receive a token
 ### Main Goals
 - `GET /mainGoals` — fetch all main goals
 - `POST /mainGoals` — create a main goal
@@ -51,18 +52,18 @@
 - `DELETE /subgoals/:id` — delete a subgoal
 
 ## Local Setup (Coming Soon)
-Instructions for running the client and server locally will be added after deployment.
+Instructions for running the client and server locally will be added soon.
 
 ## Deployment Status
-This project is currently under active development.
-The app is not deployed yet, so setting it up locally requires installing Node.js, MongoDB, and configuring environment variables manually.
+The application is fully deployed and available online.
+- **Frontend:** Vercel
+- **Backend:** Render
+- **Database:** MongoDB Atlas
 
-A public deployment is planned.
-Once the deployment is ready, this README will be updated with step-by-step setup instructions and usage examples.
+You can access the live version here:
+[Live Demo](#live-demo)
 
 ## Future Improvements
-- Add user authentication
-- Deploy with MongoDB Atlas
 - Add a horizontal calendar view that displays all main goals
 
 ## License
